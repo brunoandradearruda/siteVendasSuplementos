@@ -3,18 +3,17 @@ export interface Produto {
   id: number;
   nome: string;
   marca: string;
-  categoria: 'Proteína' | 'Creatina' | 'Pré-Treino';
+  categoria: 'Proteína' | 'Creatina' | 'Pré-Treino' | 'Aminoácido' | 'Vitamina' | 'Hipercalórico';
   imagemUrl: string;
-  
-  // CAMPOS ADICIONADOS PARA COMPARAÇÃO:
   pesoEmGramas: number;
   dosePadraoEmGramas: number;
   precoMedioEmReais: number;
-  
   linkAfiliado: string;
 }
+  
+  // CAMPOS ADICIONADOS PARA COMPARAÇÃO:
 
-// Nossa lista de produtos, agora com os novos dados
+// Nossa lista de produtos, agora mais completa
 export const listaDeProdutos: Produto[] = [
   {
     id: 1,
@@ -47,6 +46,40 @@ export const listaDeProdutos: Produto[] = [
     pesoEmGramas: 300,
     dosePadraoEmGramas: 10,
     precoMedioEmReais: 99.90,
+    linkAfiliado: 'SEU-LINK-AQUI',
+  },
+  // --- NOVOS PRODUTOS ADICIONADOS ---
+  {
+    id: 4,
+    nome: 'Multivitamínico (120 caps)',
+    marca: 'Growth Supplements',
+    categoria: 'Vitamina',
+    imagemUrl: 'https://images.tcdn.com.br/img/img_prod/755086/multivitaminico_120_caps_growth_supplements_25_1_20201216182342.jpg',
+    pesoEmGramas: 120, // Peso total em gramas (aprox)
+    dosePadraoEmGramas: 1, // Dose em cápsulas, mas usamos 1g como referência
+    precoMedioEmReais: 35.00,
+    linkAfiliado: 'SEU-LINK-AQUI',
+  },
+  {
+    id: 5,
+    nome: 'BCAA 2400 (100 tabs)',
+    marca: 'Max Titanium',
+    categoria: 'Aminoácido',
+    imagemUrl: 'https://images.tcdn.com.br/img/img_prod/755086/bcaa_2400_100_caps_max_titanium_169_1_20210311141756.jpg',
+    pesoEmGramas: 150, // Peso total em gramas (aprox)
+    dosePadraoEmGramas: 2.4, // Dose em gramas de BCAA
+    precoMedioEmReais: 45.00,
+    linkAfiliado: 'SEU-LINK-AQUI',
+  },
+  {
+    id: 6,
+    nome: 'Glutamina (300g)',
+    marca: 'Integralmédica',
+    categoria: 'Aminoácido',
+    imagemUrl: 'https://integralmedica.vtexassets.com/arquivos/ids/155799/glutamina-300g-integralmedica.png?v=637773229864230000',
+    pesoEmGramas: 300,
+    dosePadraoEmGramas: 5,
+    precoMedioEmReais: 65.00,
     linkAfiliado: 'SEU-LINK-AQUI',
   },
 ];

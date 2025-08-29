@@ -8,6 +8,14 @@ const nextConfig = {
         port: '',
         pathname: '/**',
       },
+      // --- LINHAS ADICIONADAS ---
+      {
+        protocol: 'https',
+        hostname: 'integralmedica.vtexassets.com',
+        port: '',
+        pathname: '/**',
+      },
+      // --------------------------
     ],
   },
 }

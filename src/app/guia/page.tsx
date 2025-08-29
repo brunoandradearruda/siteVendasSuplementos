@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from 'react';
-import Link from 'next/link';
 
 type Objetivo = 'massa' | 'energia' | 'emagrecimento';
 
@@ -49,49 +48,25 @@ export default function GuiaPage() {
   };
 
   return (
-    <div className="bg-slate-50 min-h-screen">
-       <header className="bg-white shadow-sm sticky top-0 z-10">
-        <div className="container mx-auto py-6 px-4">
-          <h1 className="text-3xl font-bold text-slate-800 text-center">
-            Qual suplemento tomar?
-          </h1>
-          <p className="text-slate-600 text-center mt-2">
-            Descubra a melhor suplementação para o seu objetivo.
-          </p>
-           <nav className="flex justify-center flex-wrap gap-x-6 gap-y-2 mt-4 border-t pt-4">
-            <Link href="/" className="font-semibold text-slate-700 hover:text-blue-600">
-              Recomendações
-            </Link>
-            <Link href="/comparador" className="font-semibold text-slate-700 hover:text-blue-600">
-              Tabela Comparativa
-            </Link>
-            <Link href="/guia" className="font-semibold text-blue-600 border-b-2 border-blue-600 pb-1">
-              Qual suplemento tomar?
-            </Link>
-          </nav>
+    <div className="container mx-auto py-10 px-4">
+      <section className="text-center">
+        <h2 className="text-2xl font-semibold text-slate-700 mb-6">Qual é o seu principal objetivo?</h2>
+        <div className="flex justify-center gap-4 flex-wrap">
+          <button onClick={() => setObjetivo('massa')} className={`px-6 py-3 font-bold rounded-lg transition-all ${objetivo === 'massa' ? 'bg-blue-600 text-white shadow-lg scale-105' : 'bg-white text-slate-700 hover:bg-slate-100 shadow'}`}>
+            Ganhar Massa Muscular
+          </button>
+          <button onClick={() => setObjetivo('energia')} className={`px-6 py-3 font-bold rounded-lg transition-all ${objetivo === 'energia' ? 'bg-blue-600 text-white shadow-lg scale-105' : 'bg-white text-slate-700 hover:bg-slate-100 shadow'}`}>
+            Mais Energia / Performance
+          </button>
+          <button onClick={() => setObjetivo('emagrecimento')} className={`px-6 py-3 font-bold rounded-lg transition-all ${objetivo === 'emagrecimento' ? 'bg-blue-600 text-white shadow-lg scale-105' : 'bg-white text-slate-700 hover:bg-slate-100 shadow'}`}>
+            Emagrecimento / Definição
+          </button>
         </div>
-      </header>
+      </section>
 
-      <main className="container mx-auto py-10 px-4">
-        <section className="text-center">
-          <h2 className="text-2xl font-semibold text-slate-700 mb-6">Qual é o seu principal objetivo?</h2>
-          <div className="flex justify-center gap-4 flex-wrap">
-            <button onClick={() => setObjetivo('massa')} className={`px-6 py-3 font-bold rounded-lg transition-all ${objetivo === 'massa' ? 'bg-blue-600 text-white shadow-lg scale-105' : 'bg-white text-slate-700 hover:bg-slate-100 shadow'}`}>
-              Ganhar Massa Muscular
-            </button>
-            <button onClick={() => setObjetivo('energia')} className={`px-6 py-3 font-bold rounded-lg transition-all ${objetivo === 'energia' ? 'bg-blue-600 text-white shadow-lg scale-105' : 'bg-white text-slate-700 hover:bg-slate-100 shadow'}`}>
-              Mais Energia / Performance
-            </button>
-            <button onClick={() => setObjetivo('emagrecimento')} className={`px-6 py-3 font-bold rounded-lg transition-all ${objetivo === 'emagrecimento' ? 'bg-blue-600 text-white shadow-lg scale-105' : 'bg-white text-slate-700 hover:bg-slate-100 shadow'}`}>
-              Emagrecimento / Definição
-            </button>
-          </div>
-        </section>
-
-        <section className="mt-12 max-w-2xl mx-auto">
-          {renderRecomendacao()}
-        </section>
-      </main>
+      <section className="mt-12 max-w-2xl mx-auto">
+        {renderRecomendacao()}
+      </section>
     </div>
   );
 }
