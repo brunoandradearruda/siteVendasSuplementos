@@ -8,9 +8,13 @@ interface PageProps { params: { slug: string } }
 
 export default function CategoriaPage({ params }: PageProps) {
   const categoria = listaDeCategorias.find(c => c.id === params.slug);
-  if (!categoria) notFound();
+  
+  if (!categoria) {
+    notFound();
+  }
 
-  const produtosDaCategoria = listaDeProdutos.filter(p => slugify(p.categoria) === params.slug);
+  // LÓGICA DE FILTRO CORRIGIDA E SIMPLIFICADA
+  const produtosDaCategoria = listaDeProdutos.filter(p => p.categoryId === params.slug);
 
   return (
     <div className="container mx-auto py-10 px-4">
@@ -23,7 +27,6 @@ export default function CategoriaPage({ params }: PageProps) {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {produtosDaCategoria.map(produto => (
           <Link href={`/produto/${produto.slug}`} key={produto.id} className="block group">
-             {/* Reutilizamos o mesmo design de card da home */}
              <div className="bg-white rounded-lg shadow-lg overflow-hidden flex flex-col h-full group-hover:shadow-xl transition-shadow duration-300">
                 <div className="relative w-full h-56"><Image src={produto.imagemUrl} alt={produto.nome} fill style={{objectFit: 'contain'}} className="p-4" /></div>
                 <div className="p-6 flex-grow flex flex-col">
@@ -34,6 +37,10 @@ export default function CategoriaPage({ params }: PageProps) {
               </div>
           </Link>
         ))}
+        {/* Mensagem caso não encontre produtos */}
+        {produtosDaCategoria.length === 0 && (
+            <p className="md:col-span-2 lg:col-span-3 text-center text-slate-500">Nenhum produto encontrado para esta categoria ainda.</p>
+        )}
       </div>
 
       {/* Seção de Perguntas Frequentes */}
@@ -51,6 +58,3 @@ export default function CategoriaPage({ params }: PageProps) {
     </div>
   );
 }
-
-// Função para criar URLs amigáveis (pode ser movida para um arquivo de 'utils' no futuro)
-const slugify = (text: string) => text.toString().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/\s+/g, '-').replace(/[^\w-]+/g, '').replace(/--+/g, '-').replace(/^-+/, '').replace(/-+$/, '');
