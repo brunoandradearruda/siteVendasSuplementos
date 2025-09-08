@@ -3,17 +3,34 @@ import { listaDeProdutos } from '@/data/produtos';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
+import type { Metadata } from 'next';
 
-interface PageProps { params: { slug: string } }
+interface PageProps { 
+  params: { slug: string } 
+}
 
-export default function CategoriaPage({ params }: PageProps) {
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const categoria = listaDeCategorias.find(c => c.id === params.slug);
+
+  if (!categoria) {
+    return {
+      title: 'Categoria não encontrada',
+    }
+  }
+
+  return {
+    title: `Melhores Suplementos de ${categoria.nome}`,
+    description: categoria.descricao,
+  }
+}
+
+export default async function CategoriaPage({ params }: PageProps) {
   const categoria = listaDeCategorias.find(c => c.id === params.slug);
   
   if (!categoria) {
     notFound();
   }
 
-  // LÓGICA DE FILTRO CORRIGIDA E SIMPLIFICADA
   const produtosDaCategoria = listaDeProdutos.filter(p => p.categoryId === params.slug);
 
   return (
@@ -23,7 +40,6 @@ export default function CategoriaPage({ params }: PageProps) {
         <p className="mt-4 text-lg text-slate-600 max-w-3xl mx-auto">{categoria.descricao}</p>
       </header>
 
-      {/* Grid de Produtos da Categoria */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {produtosDaCategoria.map(produto => (
           <Link href={`/produto/${produto.slug}`} key={produto.id} className="block group">
@@ -37,13 +53,11 @@ export default function CategoriaPage({ params }: PageProps) {
               </div>
           </Link>
         ))}
-        {/* Mensagem caso não encontre produtos */}
         {produtosDaCategoria.length === 0 && (
             <p className="md:col-span-2 lg:col-span-3 text-center text-slate-500">Nenhum produto encontrado para esta categoria ainda.</p>
         )}
       </div>
 
-      {/* Seção de Perguntas Frequentes */}
       <section className="mt-16 max-w-4xl mx-auto">
         <h2 className="text-3xl font-bold text-slate-800 text-center mb-8">Dúvidas Frequentes</h2>
         <div className="space-y-4">

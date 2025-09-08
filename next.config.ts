@@ -1,5 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+   output: 'standalone', // Essencial para este tipo de hospedagem
   images: {
     remotePatterns: [
       {
