@@ -5,17 +5,18 @@ import Link from 'next/link';
 import Image from 'next/image';
 import type { Metadata } from 'next';
 
+// CORREÇÃO NEXT.JS 15: params agora é uma Promise
 interface PageProps { 
-  params: { slug: string } 
+  params: Promise<{ slug: string }> 
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-  const categoria = listaDeCategorias.find(c => c.id === params.slug);
+  // CORREÇÃO: Precisamos aguardar (await) o params antes de usar
+  const { slug } = await params;
+  const categoria = listaDeCategorias.find(c => c.id === slug);
 
   if (!categoria) {
-    return {
-      title: 'Categoria não encontrada',
-    }
+    return { title: 'Categoria não encontrada' }
   }
 
   return {
@@ -25,13 +26,16 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 }
 
 export default async function CategoriaPage({ params }: PageProps) {
-  const categoria = listaDeCategorias.find(c => c.id === params.slug);
+  // CORREÇÃO: Aguardamos o params aqui também
+  const { slug } = await params;
+  
+  const categoria = listaDeCategorias.find(c => c.id === slug);
   
   if (!categoria) {
     notFound();
   }
 
-  const produtosDaCategoria = listaDeProdutos.filter(p => p.categoryId === params.slug);
+  const produtosDaCategoria = listaDeProdutos.filter(p => p.categoryId === slug);
 
   return (
     <div className="container mx-auto py-10 px-4">

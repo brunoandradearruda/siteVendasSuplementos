@@ -4,12 +4,16 @@ import Image from 'next/image';
 import Link from 'next/link';
 import type { Metadata } from 'next';
 
+// CORREÇÃO NEXT.JS 15: params é Promise
 interface PageProps {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-  const produto = listaDeProdutos.find(p => p.slug === params.slug);
+  // CORREÇÃO: await params
+  const { slug } = await params;
+  const produto = listaDeProdutos.find(p => p.slug === slug);
+  
   if (!produto) {
     return { title: 'Produto não encontrado' };
   }
@@ -18,11 +22,14 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     description: `Confira nossa análise detalhada do ${produto.nome} da marca ${produto.marca}.`,
   };
 }
-
+    
 const slugify = (text: string) => text.toString().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/\s+/g, '-').replace(/[^\w-]+/g, '').replace(/--+/g, '-').replace(/^-+/, '').replace(/-+$/, '');
 
 export default async function ProdutoPage({ params }: PageProps) {
-  const produto = listaDeProdutos.find(p => p.slug === params.slug);
+  // CORREÇÃO: await params
+  const { slug } = await params;
+  
+  const produto = listaDeProdutos.find(p => p.slug === slug);
   if (!produto) {
     notFound();
   }

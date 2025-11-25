@@ -26,7 +26,8 @@ export default function GuiaPage() {
             <h3 className="font-bold text-xl text-slate-800">Objetivo: Mais Energia e Performance</h3>
             <p className="mt-2 text-slate-600">Para maximizar seu rendimento, foco e resistência durante os treinos, os suplementos certos podem fazer toda a diferença.</p>
             <ul className="list-disc list-inside mt-4 space-y-2">
-              <li><strong>Pré-Treino:</strong> Fornece um pico de energia, foco mental e melhora a vasodilatação para um "pump" melhor.</li>
+              {/* CORREÇÃO AQUI: Trocamos "pump" por &quot;pump&quot; */}
+              <li><strong>Pré-Treino:</strong> Fornece um pico de energia, foco mental e melhora a vasodilatação para um &quot;pump&quot; melhor.</li>
               <li><strong>Creatina:</strong> É a base da energia para movimentos rápidos e explosivos. Essencial para performance.</li>
             </ul>
           </div>
