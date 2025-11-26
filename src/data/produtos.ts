@@ -21,7 +21,7 @@ export const listaDeProdutos: Produto[] = [
   // =========================================
   {
     id: 1, slug: 'whey-dux-concentrado', nome: 'Whey Protein Concentrado (900g)', marca: 'Dux Nutrition', categoria: 'Proteína', categoryId: 'proteina',
-    imagemUrl: 'https://http2.mlstatic.com/D_NQ_NP_632682-MLU72695866789_112023-O.webp',
+    imagemUrl: 'https://http2.mlstatic.com/D_NQ_NP_2X_683350-MLA95701763954_102025-F.webp',
     pontosPositivos: ['Sabor considerado um dos melhores do mercado', 'Matéria-prima premium de alta qualidade', 'Perfil de aminoácidos completo'],
     pontosNegativos: ['Preço mais elevado que a média', 'Embalagem de 900g (padrão, mas acaba rápido)'],
     pesoEmGramas: 900, dosePadraoEmGramas: 30, precoMedioEmReais: 161.41,
@@ -29,7 +29,7 @@ export const listaDeProdutos: Produto[] = [
   },
   {
     id: 2, slug: 'whey-soldiers-mocaccino', nome: 'Whey Protein Concentrado (1kg)', marca: 'Soldiers Nutrition', categoria: 'Proteína', categoryId: 'proteina',
-    imagemUrl: 'https://http2.mlstatic.com/D_NQ_NP_779402-MLU74934221267_032024-O.webp',
+    imagemUrl: 'https://http2.mlstatic.com/D_NQ_NP_2X_915017-MLA96151338681_102025-F.webp',
     pontosPositivos: ['Sabor diferenciado (Mocaccino)', 'Embalagem de 1kg (rende mais que as de 900g)', 'Excelente custo-benefício'],
     pontosNegativos: ['Embalagem pouch (saco) exige cuidado ao fechar', 'Contém lactose'],
     pesoEmGramas: 1000, dosePadraoEmGramas: 30, precoMedioEmReais: 104.50,
@@ -37,7 +37,7 @@ export const listaDeProdutos: Produto[] = [
   },
   {
     id: 3, slug: 'whey-max-titanium-pro', nome: 'Whey Pro (1kg)', marca: 'Max Titanium', categoria: 'Proteína', categoryId: 'proteina',
-    imagemUrl: 'https://http2.mlstatic.com/D_NQ_NP_752562-MLU72603230279_112023-O.webp',
+    imagemUrl: 'https://http2.mlstatic.com/D_NQ_NP_2X_760225-MLA96144741165_102025-F.webp',
     pontosPositivos: ['Marca líder de mercado e confiança', 'Preço de entrada muito acessível', 'Boa solubilidade'],
     pontosNegativos: ['Concentração de proteína menor que a linha "Top Whey"', 'Contém carboidratos na fórmula'],
     pesoEmGramas: 1000, dosePadraoEmGramas: 40, precoMedioEmReais: 89.90,
@@ -45,7 +45,7 @@ export const listaDeProdutos: Produto[] = [
   },
   {
     id: 4, slug: 'whey-growth-80', nome: 'Whey Protein 80% (1kg)', marca: 'Growth Supplements', categoria: 'Proteína', categoryId: 'proteina',
-    imagemUrl: 'https://http2.mlstatic.com/D_NQ_NP_795513-MLU74362247011_012024-O.webp',
+    imagemUrl: 'https://http2.mlstatic.com/D_NQ_NP_2X_810392-MLA98296434364_112025-F.webp',
     pontosPositivos: ['Alta concentração (80% de pureza)', 'Referência em custo-benefício no Brasil', 'Embalagem de 1kg'],
     pontosNegativos: ['Sabor é bom, mas inferior a marcas gourmet', 'Vendido por revendedores no ML (preço varia)'],
     pesoEmGramas: 1000, dosePadraoEmGramas: 30, precoMedioEmReais: 149.90,
@@ -53,7 +53,7 @@ export const listaDeProdutos: Produto[] = [
   },
   {
     id: 5, slug: 'whey-dark-lab-refil', nome: '100% Whey Refil (900g)', marca: 'Dark Lab', categoria: 'Proteína', categoryId: 'proteina',
-    imagemUrl: 'https://http2.mlstatic.com/D_NQ_NP_782939-MLU74806598920_022024-O.webp',
+    imagemUrl: 'https://http2.mlstatic.com/D_NQ_NP_2X_659809-MLA96135273193_102025-F.webp',
     pontosPositivos: ['Preço extremamente agressivo', 'Boa opção para quem quer economizar', 'Embalagem refil prática'],
     pontosNegativos: ['Marca menos tradicional que as gigantes', 'Teor de carboidratos médio'],
     pesoEmGramas: 900, dosePadraoEmGramas: 30, precoMedioEmReais: 89.91,
@@ -61,7 +61,7 @@ export const listaDeProdutos: Produto[] = [
   },
   {
     id: 6, slug: 'whey-pretorian-2kg', nome: 'Iso Protein Blend Complex (2kg)', marca: 'Pretorian', categoria: 'Proteína', categoryId: 'proteina',
-    imagemUrl: 'https://http2.mlstatic.com/D_NQ_NP_665324-MLB70438131390_072023-O.webp',
+    imagemUrl: 'https://http2.mlstatic.com/D_NQ_NP_2X_724794-MLA96129982505_102025-F.webp',
     pontosPositivos: ['Pote Gigante de 2kg', 'Melhor preço por quilo da lista', 'Blend de proteínas'],
     pontosNegativos: ['Não é Whey Puro (é um blend com outras proteínas)', 'Sabor pode ser mais artificial'],
     pesoEmGramas: 2000, dosePadraoEmGramas: 40, precoMedioEmReais: 76.59,
@@ -69,7 +69,7 @@ export const listaDeProdutos: Produto[] = [
   },
   {
     id: 7, slug: 'nutri-whey-integral', nome: 'Nutri Whey Protein (900g)', marca: 'Integralmédica', categoria: 'Proteína', categoryId: 'proteina',
-    imagemUrl: 'https://http2.mlstatic.com/D_NQ_NP_604246-MLU74543689693_022024-O.webp',
+    imagemUrl: 'https://http2.mlstatic.com/D_NQ_NP_2X_945730-MLA98801101691_112025-F.webp',
     pontosPositivos: ['Preço muito baixo', 'Marca de extrema confiança', 'Bom sabor'],
     pontosNegativos: ['É um hipercalórico/blend (tem bastante carboidrato)', 'Menor concentração de proteína por dose'],
     pesoEmGramas: 900, dosePadraoEmGramas: 40, precoMedioEmReais: 50.14,
@@ -77,7 +77,7 @@ export const listaDeProdutos: Produto[] = [
   },
   {
     id: 8, slug: 'tasty-whey-adaptogen', nome: 'Tasty Whey Gourmet (900g)', marca: 'Adaptogen', categoria: 'Proteína', categoryId: 'proteina',
-    imagemUrl: 'https://http2.mlstatic.com/D_NQ_NP_919622-MLU74673786997_022024-O.webp',
+    imagemUrl: 'https://http2.mlstatic.com/D_NQ_NP_2X_742712-MLA96139088739_102025-F.webp',
     pontosPositivos: ['Considerado o Whey mais saboroso do mundo', 'Textura de milkshake', 'Qualidade internacional'],
     pontosNegativos: ['Preço premium', 'Acaba muito rápido por ser gostoso'],
     pesoEmGramas: 900, dosePadraoEmGramas: 35, precoMedioEmReais: 144.39,
@@ -85,7 +85,7 @@ export const listaDeProdutos: Produto[] = [
   },
   {
     id: 9, slug: 'whey-ftw-refil', nome: '100% Whey Refil (900g)', marca: 'FTW', categoria: 'Proteína', categoryId: 'proteina',
-    imagemUrl: 'https://http2.mlstatic.com/D_NQ_NP_793587-MLU73194325424_122023-O.webp',
+    imagemUrl: 'https://http2.mlstatic.com/D_NQ_NP_2X_699489-MLA96134308781_102025-F.webp',
     pontosPositivos: ['Ótimo custo-benefício em refil', 'Variedade de sabores interessantes', 'Bom perfil de aminoácidos'],
     pontosNegativos: ['Embalagem refil simples', 'Solubilidade média'],
     pesoEmGramas: 900, dosePadraoEmGramas: 30, precoMedioEmReais: 74.98,
@@ -93,7 +93,7 @@ export const listaDeProdutos: Produto[] = [
   },
 
   // =========================================
-  // CATEGORIA: CREATINA
+  // CATEGORIA: CREATINA (CORRIGIDA)
   // =========================================
   {
     id: 20, slug: 'creatina-soldiers-300g', nome: 'Creatina Monohidratada 100% Pura (300g)', marca: 'Soldiers Nutrition', categoria: 'Creatina', categoryId: 'creatina',
@@ -129,11 +129,11 @@ export const listaDeProdutos: Produto[] = [
   },
   {
     id: 24, slug: 'creatina-dark-lab-300g', nome: 'Creatina Monohidratada Pura (300g)', marca: 'Dark Lab', categoria: 'Creatina', categoryId: 'creatina',
-    imagemUrl: 'https://http2.mlstatic.com/D_NQ_NP_792652-MLU72647337394_112023-O.webp',
-    pontosPositivos: ['Opção de entrada da Dark Lab', '100% Pura', 'Boa solubilidade'],
-    pontosNegativos: ['Preço por kg mais alto que a versão de 500g'],
-    pesoEmGramas: 300, dosePadraoEmGramas: 3, precoMedioEmReais: 89.90,
-    linkAfiliado: 'https://mercadolivre.com/sec/2wNzeTy',
+    imagemUrl: 'https://http2.mlstatic.com/D_NQ_NP_966628-MLU72640467458_112023-O.webp',
+    pontosPositivos: ['Melhor preço do mercado (R$ 32,00)', 'Embalagem em Pote (mais prática)', '100% Pura'],
+    pontosNegativos: ['Acompanha scoop, mas pode vir no fundo'],
+    pesoEmGramas: 300, dosePadraoEmGramas: 3, precoMedioEmReais: 32.31,
+    linkAfiliado: 'https://mercadolivre.com/sec/1TuMeYk',
   },
   {
     id: 25, slug: 'creatina-ronnie-coleman-300g', nome: 'Creatina Ronnie Coleman (300g)', marca: 'Ronnie Coleman', categoria: 'Creatina', categoryId: 'creatina',
@@ -317,7 +317,7 @@ export const listaDeProdutos: Produto[] = [
     pontosPositivos: ['Qualidade Growth garantida', 'Embalagem de 1kg ideal para testar', 'Sem adição de soja na proteína'],
     pontosNegativos: ['Pacote menor (acaba rápido se usar dose cheia)', 'Vendido por revenda no ML'],
     pesoEmGramas: 1000, dosePadraoEmGramas: 160, precoMedioEmReais: 71.99,
-    linkAfiliado: 'LINK_PENDENTE_GROWTH', // Link não estava no print, mantive placeholder
+    linkAfiliado: 'LINK_PENDENTE_GROWTH', 
   },
   {
     id: 68, slug: 'big-size-mass-brn-6kg', nome: 'Big Size Mass 72.700 (6kg)', marca: 'BRN Foods', categoria: 'Hipercalórico', categoryId: 'hipercalorico',

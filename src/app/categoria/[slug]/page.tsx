@@ -1,6 +1,6 @@
 import { listaDeCategorias } from '@/data/categorias';
 import { listaDeProdutos } from '@/data/produtos';
-import FAQAccordion from '@/components/FAQAccordion'; // Importando o novo componente
+import FAQAccordion from '@/components/FAQAccordion';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -50,10 +50,20 @@ export default async function CategoriaPage({ params }: PageProps) {
                   </div>
                   
                   <div className="p-6 flex-grow flex flex-col border-t border-slate-50 bg-slate-50/50">
-                    <span className="text-xs font-bold text-emerald-600 uppercase tracking-wide mb-2">{produto.marca}</span>
-                    <h2 className="text-xl font-bold text-slate-800 leading-snug mb-2 group-hover:text-blue-600 transition-colors">{produto.nome}</h2>
+                    <span className="text-xs font-bold text-blue-600 uppercase tracking-wide mb-2">{produto.marca}</span>
+                    <h2 className="text-xl font-bold text-slate-800 leading-snug mb-2 group-hover:text-blue-600 transition-colors line-clamp-2 min-h-[3.5rem]">
+                      {produto.nome}
+                    </h2>
                     
-                    <div className="mt-auto pt-4 w-full">
+                    {/* PREÇO EM DESTAQUE (NOVO) */}
+                    <div className="mt-2 mb-4">
+                      <p className="text-xs text-slate-400 mb-0.5">Preço médio:</p>
+                      <p className="text-2xl font-extrabold text-emerald-600">
+                        R$ {produto.precoMedioEmReais.toFixed(2).replace('.', ',')}
+                      </p>
+                    </div>
+                    
+                    <div className="mt-auto w-full">
                        <button className="w-full bg-blue-600 text-white font-bold py-3 px-4 rounded-xl group-hover:bg-blue-700 transition-colors flex items-center justify-center gap-2">
                           Conferir Detalhes
                           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-4 h-4">
@@ -68,14 +78,13 @@ export default async function CategoriaPage({ params }: PageProps) {
           {produtosDaCategoria.length === 0 && (<p className="text-center text-slate-500 col-span-full py-10">Nenhum produto encontrado nesta categoria.</p>)}
         </div>
 
-        {/* FAQ (AGORA INTERATIVO) */}
+        {/* FAQ */}
         <section className="mt-24 max-w-3xl mx-auto">
           <div className="text-center mb-10">
             <h2 className="text-3xl font-bold text-slate-800">Dúvidas Comuns sobre {categoria.nome}</h2>
             <div className="w-20 h-1 bg-emerald-500 mx-auto mt-4 rounded-full"></div>
           </div>
           
-          {/* Aqui usamos o nosso novo componente */}
           <FAQAccordion itens={categoria.perguntasFrequentes} />
           
         </section>

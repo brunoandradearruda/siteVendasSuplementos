@@ -4,54 +4,22 @@ import { listaDeProdutos } from '@/data/produtos';
 import Image from 'next/image';
 
 export default function Home() {
-  // Seleciona produtos para destaque (Whey Dux, Creatina Soldiers, Pré Diablo)
-  // Certifique-se de que os IDs 1, 20 e 41 existem no seu produtos.ts
+  // Destaques (IDs: 1-Whey Dux, 20-Creatina Soldiers, 41-Pre Treino Diablo)
   const destaques = [1, 20, 41].map(id => listaDeProdutos.find(p => p.id === id)).filter(Boolean);
 
-  // Lista de vídeos educativos expandida para todas as categorias
   const videosEducativos = [
-    {
-      titulo: "Whey Protein: O Guia Definitivo",
-      canal: "Leandro Twin",
-      id: "Scg-kUEFz2g", 
-      categoria: "Proteína"
-    },
-    {
-      titulo: "Tudo sobre Creatina (Mitos e Verdades)",
-      canal: "Renato Cariani",
-      id: "hM4hC40M3qU",
-      categoria: "Creatina"
-    },
-    {
-      titulo: "Qual o Melhor Pré-Treino para Você?",
-      canal: "Gorgonoid",
-      id: "6M2q3s4t5u", // Exemplo
-      categoria: "Pré-Treino"
-    },
-    {
-      titulo: "Hipercalórico: Como tomar sem ganhar barriga?",
-      canal: "Leandro Twin",
-      id: "lWJ6V7x0_IQ", // ID real de vídeo sobre hipercalórico
-      categoria: "Hipercalórico"
-    },
-    {
-      titulo: "BCAA: Ainda vale a pena tomar?",
-      canal: "Paulo Muzy",
-      id: "_Z1A2B3C4d", // ID Exemplo
-      categoria: "BCAA"
-    },
-    {
-      titulo: "Albumina: A Proteína Barata que Funciona",
-      canal: "Gorgonoid",
-      id: "Xy9Z8w7v6u", // ID Exemplo
-      categoria: "Albumina"
-    }
+    { titulo: "Whey Protein: O Guia Definitivo", canal: "Leandro Twin", id: "Scg-kUEFz2g", categoria: "Proteína" },
+    { titulo: "Tudo sobre Creatina (Mitos e Verdades)", canal: "Renato Cariani", id: "hM4hC40M3qU", categoria: "Creatina" },
+    { titulo: "Qual o Melhor Pré-Treino para Você?", canal: "Gorgonoid", id: "6M2q3s4t5u", categoria: "Pré-Treino" },
+    { titulo: "Hipercalórico: Como tomar?", canal: "Leandro Twin", id: "lWJ6V7x0_IQ", categoria: "Hipercalórico" },
+    { titulo: "BCAA: Ainda vale a pena tomar?", canal: "Paulo Muzy", id: "_Z1A2B3C4d", categoria: "BCAA" },
+    { titulo: "Albumina: A Proteína Barata", canal: "Gorgonoid", id: "Xy9Z8w7v6u", categoria: "Albumina" }
   ];
 
   return (
     <div className="bg-slate-50 min-h-screen">
       {/* HERO SECTION */}
-      <div className="relative bg-slate-900 text-white overflow-hidden pb-20">
+      <div className="relative bg-slate-900 text-white overflow-hidden pb-24">
         <div className="absolute inset-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')]"></div>
         <div className="container mx-auto px-4 py-24 relative z-10 text-center">
           <span className="inline-block py-1 px-3 rounded-full bg-emerald-500/20 text-emerald-300 text-sm font-bold mb-4 border border-emerald-500/30 animate-fade-in">
@@ -72,7 +40,7 @@ export default function Home() {
       </div>
 
       {/* DESTAQUES DA SEMANA */}
-      <div className="container mx-auto px-4 relative z-20 mt-[-60px] mb-16">
+      <div className="container mx-auto px-4 relative z-20 mt-[-60px] mb-20">
         <div className="bg-white rounded-2xl shadow-xl border border-slate-100 p-6 md:p-8">
           <h3 className="text-lg font-bold text-slate-800 mb-6 flex items-center gap-2">
             <span className="text-2xl">🔥</span> Destaques da Semana
@@ -94,37 +62,48 @@ export default function Home() {
         </div>
       </div>
 
-      {/* LISTA DE CATEGORIAS */}
-      <div id="categorias" className="container mx-auto pb-16 px-4">
+      {/* LISTA DE CATEGORIAS (VISUAL NOVO COM FOTOS) */}
+      <div id="categorias" className="container mx-auto pb-20 px-4">
         <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold text-slate-800 mb-2">O Que Você Procura Hoje?</h2>
+          <h2 className="text-3xl font-bold text-slate-800 mb-2">Navegue por Categoria</h2>
           <div className="w-16 h-1 bg-emerald-500 mx-auto rounded-full"></div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {listaDeCategorias.map((categoria) => (
             <Link href={`/categoria/${categoria.id}`} key={categoria.id} className="group">
-              <div className="bg-white rounded-2xl p-8 h-full border border-slate-100 shadow-md hover:shadow-2xl transition-all duration-300 transform group-hover:-translate-y-2">
-                <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-2xl font-bold text-slate-800 group-hover:text-emerald-600 transition-colors">
+              <div className="bg-white rounded-2xl p-6 border border-slate-100 shadow-md hover:shadow-xl transition-all duration-300 transform group-hover:-translate-y-1 flex items-center gap-6 h-full">
+                
+                {/* Imagem da Categoria (Lado Esquerdo) */}
+                <div className="relative w-24 h-24 md:w-32 md:h-32 flex-shrink-0 bg-slate-50 rounded-xl p-2">
+                  <Image 
+                    src={categoria.imagemCapa} 
+                    alt={categoria.nome} 
+                    fill 
+                    className="object-contain group-hover:scale-110 transition-transform duration-300"
+                  />
+                </div>
+
+                {/* Texto (Lado Direito) */}
+                <div className="flex-grow">
+                  <h3 className="text-2xl font-bold text-slate-800 group-hover:text-emerald-600 transition-colors mb-2">
                     {categoria.nome}
                   </h3>
-                  <span className="bg-slate-100 p-2 rounded-lg group-hover:bg-emerald-100 transition-colors">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-6 h-6 text-slate-600 group-hover:text-emerald-600">
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
-                    </svg>
+                  <p className="text-slate-500 text-sm leading-relaxed line-clamp-2">
+                    {categoria.descricao}
+                  </p>
+                  <span className="inline-block mt-3 text-sm font-bold text-emerald-600 group-hover:translate-x-2 transition-transform">
+                    Ver produtos &rarr;
                   </span>
                 </div>
-                <p className="text-slate-600 leading-relaxed">
-                  {categoria.descricao}
-                </p>
+
               </div>
             </Link>
           ))}
         </div>
       </div>
 
-      {/* NOVA SEÇÃO: VÍDEOS DE ESPECIALISTAS (Expandida) */}
+      {/* VÍDEOS DE ESPECIALISTAS */}
       <div className="bg-slate-100 py-16 border-t border-slate-200">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
@@ -134,12 +113,10 @@ export default function Home() {
             <p className="text-slate-600">Entenda como cada suplemento age no seu corpo antes de comprar.</p>
           </div>
 
-          {/* Grid adaptado para múltiplos vídeos */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {videosEducativos.map((video, index) => (
               <div key={index} className="bg-white rounded-2xl overflow-hidden shadow-lg border border-slate-200 hover:shadow-2xl transition-shadow flex flex-col">
                 <div className="relative w-full aspect-video bg-black">
-                  {/* Nota: Em um site real, você trocaria os IDs abaixo pelos vídeos exatos que deseja */}
                   <iframe
                     src={`https://www.youtube.com/embed/${video.id}`}
                     title={video.titulo}
