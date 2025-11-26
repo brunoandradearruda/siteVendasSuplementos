@@ -1,13 +1,19 @@
 "use client";
 
 import { useState } from 'react';
-// AQUI ESTAVA O ERRO: Importe diretamente do caminho relativo se o alias @ não funcionar
-import { listaDeTreinos, RotinaTreino } from '@/data/treinos'; 
+// CORREÇÃO: Usando caminho relativo para garantir que o arquivo seja encontrado
+import { listaDeTreinos, RotinaTreino } from '../../data/treinos'; 
 import Link from 'next/link';
 
 export default function TreinosPage() {
-  // Garante que a lista existe antes de tentar acessar o índice [1]
-  const treinoInicial = listaDeTreinos.length > 1 ? listaDeTreinos[1] : listaDeTreinos[0];
+  // Garante que a lista existe e tem itens antes de tentar acessar
+  const treinoInicial = listaDeTreinos && listaDeTreinos.length > 0 ? listaDeTreinos[0] : null;
+  
+  // Se por algum motivo a lista estiver vazia ou indefinida, evitamos o crash
+  if (!treinoInicial) {
+    return <div className="p-10 text-center">Carregando treinos...</div>;
+  }
+
   const [treinoAtivo, setTreinoAtivo] = useState<RotinaTreino>(treinoInicial);
 
   return (
