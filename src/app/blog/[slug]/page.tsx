@@ -2,7 +2,7 @@ import { listaDePosts } from '@/data/posts';
 import { listaDeProdutos } from '@/data/produtos';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
-import Image from 'next/image';
+import Image from 'next/image'; // Importar Image
 import type { Metadata } from 'next';
 
 interface PageProps {
@@ -22,7 +22,6 @@ export default async function PostPage({ params }: PageProps) {
 
   if (!post) notFound();
 
-  // Busca o produto relacionado, se houver
   const produtoRelacionado = post.produtoRelacionadoSlug 
     ? listaDeProdutos.find(p => p.slug === post.produtoRelacionadoSlug)
     : null;
@@ -32,7 +31,15 @@ export default async function PostPage({ params }: PageProps) {
       
       {/* CABEÇALHO DO POST */}
       <div className="relative h-[400px] w-full bg-slate-900 flex items-center justify-center overflow-hidden">
-        <img src={post.imagemUrl} alt={post.titulo} className="absolute inset-0 w-full h-full object-cover opacity-40" />
+        {/* CORREÇÃO: Usar Image com fill */}
+        <Image 
+          src={post.imagemUrl} 
+          alt={post.titulo} 
+          fill
+          style={{ objectFit: 'cover' }}
+          className="opacity-40"
+          priority
+        />
         <div className="relative z-10 container mx-auto px-4 text-center text-white">
           <span className="inline-block py-1 px-3 rounded-full bg-emerald-500/20 border border-emerald-500/50 text-emerald-300 text-sm font-bold mb-4 backdrop-blur-sm">
             BLOG SUPLEMENTOS PRO
@@ -45,14 +52,11 @@ export default async function PostPage({ params }: PageProps) {
       <div className="container mx-auto px-4 max-w-3xl -mt-10 relative z-20">
         <div className="bg-white rounded-3xl shadow-xl p-8 md:p-12 border border-slate-100">
           
-          {/* CONTEÚDO DO POST */}
           <article className="prose prose-slate prose-lg max-w-none text-slate-700">
             {post.conteudo.map((paragrafo, index) => (
               <div key={index}>
-                {/* Renderiza o parágrafo (suporta HTML básico como <strong>) */}
                 <p className="mb-6 leading-relaxed" dangerouslySetInnerHTML={{ __html: paragrafo }} />
 
-                {/* CARD DE PRODUTO NO MEIO DO TEXTO (Se for o segundo parágrafo e tiver produto) */}
                 {index === 1 && produtoRelacionado && (
                   <div className="my-10 bg-slate-50 border-l-4 border-emerald-500 p-6 rounded-r-xl shadow-sm not-prose flex flex-col sm:flex-row items-center gap-6">
                     <div className="relative w-24 h-24 flex-shrink-0 bg-white rounded-lg p-2 border border-slate-200">
