@@ -1,51 +1,73 @@
-"use client"; // Importante: Torna este um Componente de Cliente para usar hooks
+"use client";
 
 import Link from 'next/link';
-import { usePathname } from 'next/navigation'; // Hook para ler a URL atual
+import { usePathname } from 'next/navigation';
+import SearchBar from './SearchBar';
 
 export default function Header() {
-  const pathname = usePathname(); // Pega a URL atual. Ex: "/", "/comparador", etc.
+  const pathname = usePathname();
 
-  // Função para verificar se o link deve estar ativo
   const isLinkActive = (href: string) => {
     return pathname === href;
   };
 
   return (
-    <header className="bg-white shadow-sm sticky top-0 z-10">
-      <div className="container mx-auto py-6 px-4">
-        <h1 className="text-3xl font-bold text-slate-800 text-center">
-          Guia de Suplementos PRO
-        </h1>
-        <p className="text-slate-600 text-center mt-2">
-          Análises e recomendações dos melhores suplementos do mercado.
-        </p>
-        <nav className="flex justify-center flex-wrap gap-x-6 gap-y-2 mt-4 border-t pt-4">
-          <Link 
-            href="/" 
-            className={`font-semibold pb-1 transition-colors ${isLinkActive('/') 
-              ? 'text-blue-600 border-b-2 border-blue-600' 
-              : 'text-slate-700 hover:text-blue-600'}`}
-          >
-            Recomendações
+    <header className="bg-white shadow-sm sticky top-0 z-50">
+      <div className="container mx-auto px-4 py-4">
+        <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+          
+          {/* Logo */}
+          <Link href="/" className="flex-shrink-0">
+            <h1 className="text-2xl font-extrabold text-slate-800 tracking-tight">
+              Suplementos<span className="text-emerald-500">PRO</span>
+            </h1>
           </Link>
-          <Link 
-            href="/comparador" 
-            className={`font-semibold pb-1 transition-colors ${isLinkActive('/comparador') 
-              ? 'text-blue-600 border-b-2 border-blue-600' 
-              : 'text-slate-700 hover:text-blue-600'}`}
-          >
-            Tabela Comparativa
-          </Link>
-          <Link 
-            href="/guia" 
-            className={`font-semibold pb-1 transition-colors ${isLinkActive('/guia') 
-              ? 'text-blue-600 border-b-2 border-blue-600' 
-              : 'text-slate-700 hover:text-blue-600'}`}
-          >
-            Qual suplemento tomar?
-          </Link>
-        </nav>
+
+          {/* Barra de Busca (Aparece no meio em telas grandes) */}
+          <div className="w-full md:max-w-sm order-3 md:order-2">
+            <SearchBar />
+          </div>
+
+          {/* Navegação */}
+          <nav className="flex gap-4 md:gap-6 order-2 md:order-3 text-sm font-semibold flex-wrap justify-center">
+            <Link 
+              href="/" 
+              className={`transition-colors ${isLinkActive('/') ? 'text-emerald-600' : 'text-slate-600 hover:text-emerald-600'}`}
+            >
+              Início
+            </Link>
+            <Link 
+              href="/comparador" 
+              className={`transition-colors ${isLinkActive('/comparador') ? 'text-emerald-600' : 'text-slate-600 hover:text-emerald-600'}`}
+            >
+              Comparador
+            </Link>
+            <Link 
+              href="/guia" 
+              className={`transition-colors ${isLinkActive('/guia') ? 'text-emerald-600' : 'text-slate-600 hover:text-emerald-600'}`}
+            >
+              Guia
+            </Link>
+            <Link 
+              href="/treinos" 
+              className={`transition-colors ${isLinkActive('/treinos') ? 'text-emerald-600' : 'text-slate-600 hover:text-emerald-600'}`}
+            >
+              Treinos
+            </Link>
+            <Link 
+              href="/blog" 
+              className={`transition-colors ${isLinkActive('/blog') ? 'text-emerald-600' : 'text-slate-600 hover:text-emerald-600'}`}
+            >
+              Blog
+            </Link>
+            <Link 
+              href="/calculadora" 
+              className={`transition-colors ${isLinkActive('/calculadora') ? 'text-emerald-600' : 'text-slate-600 hover:text-emerald-600'}`}
+            >
+              Calculadora
+            </Link>
+          </nav>
+        </div>
       </div>
     </header>
   );

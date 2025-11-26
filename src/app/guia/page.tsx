@@ -1,73 +1,210 @@
 "use client";
 
 import { useState } from 'react';
+import { listaDeProdutos, Produto } from '@/data/produtos';
+import Link from 'next/link';
+import Image from 'next/image';
 
-type Objetivo = 'massa' | 'energia' | 'emagrecimento';
+// Definição das etapas do Quiz
+type Step = 'goal' | 'budget' | 'loading' | 'results';
+type Goal = 'mass' | 'weight_loss' | 'energy';
+type Budget = 'economy' | 'premium';
 
 export default function GuiaPage() {
-  const [objetivo, setObjetivo] = useState<Objetivo | null>(null);
+  const [step, setStep] = useState<Step>('goal');
+  const [selectedGoal, setSelectedGoal] = useState<Goal | null>(null);
+  const [selectedBudget, setSelectedBudget] = useState<Budget | null>(null);
+  const [recommendations, setRecommendations] = useState<Produto[]>([]);
 
-  const renderRecomendacao = () => {
-    switch (objetivo) {
-      case 'massa':
-        return (
-          <div className="bg-white p-6 rounded-lg shadow-md border animate-fade-in">
-            <h3 className="font-bold text-xl text-slate-800">Objetivo: Ganhar Massa Muscular</h3>
-            <p className="mt-2 text-slate-600">Para construir músculos, você precisa de dois pilares: proteína suficiente para reconstruir as fibras musculares e energia para treinos intensos.</p>
-            <ul className="list-disc list-inside mt-4 space-y-2">
-              <li><strong>Whey Protein:</strong> Essencial para a recuperação e síntese proteica pós-treino.</li>
-              <li><strong>Creatina:</strong> Aumenta sua força e explosão, permitindo treinos mais pesados e eficazes.</li>
-            </ul>
-          </div>
-        );
-      case 'energia':
-        return (
-          <div className="bg-white p-6 rounded-lg shadow-md border animate-fade-in">
-            <h3 className="font-bold text-xl text-slate-800">Objetivo: Mais Energia e Performance</h3>
-            <p className="mt-2 text-slate-600">Para maximizar seu rendimento, foco e resistência durante os treinos, os suplementos certos podem fazer toda a diferença.</p>
-            <ul className="list-disc list-inside mt-4 space-y-2">
-              {/* CORREÇÃO AQUI: Trocamos "pump" por &quot;pump&quot; */}
-              <li><strong>Pré-Treino:</strong> Fornece um pico de energia, foco mental e melhora a vasodilatação para um &quot;pump&quot; melhor.</li>
-              <li><strong>Creatina:</strong> É a base da energia para movimentos rápidos e explosivos. Essencial para performance.</li>
-            </ul>
-          </div>
-        );
-      case 'emagrecimento':
-        return (
-          <div className="bg-white p-6 rounded-lg shadow-md border animate-fade-in">
-            <h3 className="font-bold text-xl text-slate-800">Objetivo: Emagrecimento e Definição</h3>
-            <p className="mt-2 text-slate-600">O foco aqui é manter a massa muscular enquanto se perde gordura. A suplementação ajuda a garantir que seu corpo tenha os nutrientes certos durante o déficit calórico.</p>
-            <ul className="list-disc list-inside mt-4 space-y-2">
-              <li><strong>Whey Protein:</strong> Ajuda a manter a saciedade e a atingir a meta de proteína, protegendo seus músculos.</li>
-              <li><strong>Termogênicos (com cautela):</strong> Podem ajudar a acelerar o metabolismo e dar mais energia para os treinos.</li>
-            </ul>
-          </div>
-        );
-      default:
-        return <p className="text-center text-slate-500">Selecione um objetivo acima para ver as recomendações.</p>;
+  // Lógica de Recomendação
+  const calculateRecommendations = (goal: Goal, budget: Budget) => {
+    let filtered: Produto[] = [];
+
+    // 1. Filtrar por Categoria baseada no Objetivo
+    if (goal === 'mass') {
+      // Massa: Foco em Whey e Creatina (e Hipercalórico se for muito magro, mas vamos focar no básico)
+      filtered = listaDeProdutos.filter(p => p.categoryId === 'proteina' || p.categoryId === 'creatina' || p.categoryId === 'hipercalorico');
+    } else if (goal === 'weight_loss') {
+      // Perder peso: Foco em Whey (saciadade) e talvez termogenicos (se tivessemos)
+      filtered = listaDeProdutos.filter(p => p.categoryId === 'proteina' || p.categoryId === 'albumina');
+    } else if (goal === 'energy') {
+      // Energia: Pré-treinos e Creatina
+      filtered = listaDeProdutos.filter(p => p.categoryId === 'pre-treino' || p.categoryId === 'creatina');
+    }
+
+    // 2. Filtrar por Orçamento
+    // Vamos separar grosseiramente por preço médio ou marcas conhecidas por serem custo-benefício vs premium
+    let finalSelection: Produto[] = [];
+
+    if (budget === 'economy') {
+      // Ordena por menor preço e pega os primeiros de categorias diferentes
+      const sorted = [...filtered].sort((a, b) => a.precoMedioEmReais - b.precoMedioEmReais);
+      
+      // Tenta pegar um de cada categoria principal para montar um kit barato
+      const prod1 = sorted[0];
+      const prod2 = sorted.find(p => p.categoryId !== prod1?.categoryId);
+      
+      if (prod1) finalSelection.push(prod1);
+      if (prod2) finalSelection.push(prod2);
+
+    } else {
+      // Premium: Ordena por maior preço (geralmente correlacionado a marcas premium/isolados)
+      const sorted = [...filtered].sort((a, b) => b.precoMedioEmReais - a.precoMedioEmReais);
+      
+      const prod1 = sorted[0]; // O mais caro (provavelmente o melhor whey)
+      const prod2 = sorted.find(p => p.categoryId !== prod1?.categoryId); // O melhor complemento
+      
+      if (prod1) finalSelection.push(prod1);
+      if (prod2) finalSelection.push(prod2);
+    }
+
+    setRecommendations(finalSelection);
+    
+    // Simula um tempo de "processamento" para dar ar de inteligência artificial
+    setStep('loading');
+    setTimeout(() => setStep('results'), 1500);
+  };
+
+  const handleGoalSelect = (goal: Goal) => {
+    setSelectedGoal(goal);
+    setStep('budget');
+  };
+
+  const handleBudgetSelect = (budget: Budget) => {
+    setSelectedBudget(budget);
+    if (selectedGoal) {
+      calculateRecommendations(selectedGoal, budget);
     }
   };
 
-  return (
-    <div className="container mx-auto py-10 px-4">
-      <section className="text-center">
-        <h2 className="text-2xl font-semibold text-slate-700 mb-6">Qual é o seu principal objetivo?</h2>
-        <div className="flex justify-center gap-4 flex-wrap">
-          <button onClick={() => setObjetivo('massa')} className={`px-6 py-3 font-bold rounded-lg transition-all ${objetivo === 'massa' ? 'bg-blue-600 text-white shadow-lg scale-105' : 'bg-white text-slate-700 hover:bg-slate-100 shadow'}`}>
-            Ganhar Massa Muscular
-          </button>
-          <button onClick={() => setObjetivo('energia')} className={`px-6 py-3 font-bold rounded-lg transition-all ${objetivo === 'energia' ? 'bg-blue-600 text-white shadow-lg scale-105' : 'bg-white text-slate-700 hover:bg-slate-100 shadow'}`}>
-            Mais Energia / Performance
-          </button>
-          <button onClick={() => setObjetivo('emagrecimento')} className={`px-6 py-3 font-bold rounded-lg transition-all ${objetivo === 'emagrecimento' ? 'bg-blue-600 text-white shadow-lg scale-105' : 'bg-white text-slate-700 hover:bg-slate-100 shadow'}`}>
-            Emagrecimento / Definição
-          </button>
-        </div>
-      </section>
+  const resetQuiz = () => {
+    setStep('goal');
+    setSelectedGoal(null);
+    setSelectedBudget(null);
+    setRecommendations([]);
+  };
 
-      <section className="mt-12 max-w-2xl mx-auto">
-        {renderRecomendacao()}
-      </section>
+  return (
+    <div className="bg-slate-50 min-h-screen py-12 px-4">
+      <div className="container mx-auto max-w-3xl">
+        
+        {/* CABEÇALHO DO QUIZ */}
+        <div className="text-center mb-10">
+          <span className="bg-blue-100 text-blue-700 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">
+            Consultor Virtual
+          </span>
+          <h1 className="text-3xl md:text-4xl font-extrabold text-slate-800 mt-4 mb-2">
+            Descubra seu Suplemento Ideal
+          </h1>
+          <p className="text-slate-600">
+            Responda 2 perguntas rápidas e montaremos a estratégia perfeita para você.
+          </p>
+        </div>
+
+        {/* ÁREA DO QUIZ */}
+        <div className="bg-white rounded-3xl shadow-xl border border-slate-100 overflow-hidden min-h-[400px] relative">
+          
+          {/* PASSO 1: OBJETIVO */}
+          {step === 'goal' && (
+            <div className="p-8 md:p-12 animate-fade-in">
+              <h2 className="text-2xl font-bold text-slate-800 mb-8 text-center">Qual é o seu objetivo principal?</h2>
+              <div className="grid gap-4">
+                <button onClick={() => handleGoalSelect('mass')} className="flex items-center p-4 border-2 border-slate-100 rounded-xl hover:border-emerald-500 hover:bg-emerald-50 transition-all group text-left">
+                  <span className="text-4xl mr-4 group-hover:scale-110 transition-transform">💪</span>
+                  <div>
+                    <h3 className="font-bold text-slate-800 text-lg">Ganhar Massa Muscular</h3>
+                    <p className="text-slate-500 text-sm">Quero ficar maior, mais forte e definido.</p>
+                  </div>
+                </button>
+                <button onClick={() => handleGoalSelect('weight_loss')} className="flex items-center p-4 border-2 border-slate-100 rounded-xl hover:border-blue-500 hover:bg-blue-50 transition-all group text-left">
+                  <span className="text-4xl mr-4 group-hover:scale-110 transition-transform">⚖️</span>
+                  <div>
+                    <h3 className="font-bold text-slate-800 text-lg">Emagrecimento / Definição</h3>
+                    <p className="text-slate-500 text-sm">Quero perder gordura e manter a massa magra.</p>
+                  </div>
+                </button>
+                <button onClick={() => handleGoalSelect('energy')} className="flex items-center p-4 border-2 border-slate-100 rounded-xl hover:border-amber-500 hover:bg-amber-50 transition-all group text-left">
+                  <span className="text-4xl mr-4 group-hover:scale-110 transition-transform">⚡</span>
+                  <div>
+                    <h3 className="font-bold text-slate-800 text-lg">Mais Energia e Performance</h3>
+                    <p className="text-slate-500 text-sm">Sinto cansaço nos treinos e quero render mais.</p>
+                  </div>
+                </button>
+              </div>
+            </div>
+          )}
+
+          {/* PASSO 2: ORÇAMENTO */}
+          {step === 'budget' && (
+            <div className="p-8 md:p-12 animate-fade-in">
+              <button onClick={() => setStep('goal')} className="text-sm text-slate-400 hover:text-slate-600 mb-6 flex items-center gap-1">← Voltar</button>
+              <h2 className="text-2xl font-bold text-slate-800 mb-8 text-center">Qual sua preferência de investimento?</h2>
+              <div className="grid md:grid-cols-2 gap-6">
+                <button onClick={() => handleBudgetSelect('economy')} className="p-6 border-2 border-slate-100 rounded-xl hover:border-green-500 hover:bg-green-50 transition-all text-center group h-full">
+                  <span className="text-5xl mb-4 block group-hover:scale-110 transition-transform">💰</span>
+                  <h3 className="font-bold text-slate-800 text-xl mb-2">Custo-Benefício</h3>
+                  <p className="text-slate-500 text-sm">Quero produtos que funcionam bem com o menor preço possível.</p>
+                </button>
+                <button onClick={() => handleBudgetSelect('premium')} className="p-6 border-2 border-slate-100 rounded-xl hover:border-purple-500 hover:bg-purple-50 transition-all text-center group h-full">
+                  <span className="text-5xl mb-4 block group-hover:scale-110 transition-transform">🏆</span>
+                  <h3 className="font-bold text-slate-800 text-xl mb-2">Qualidade Premium</h3>
+                  <p className="text-slate-500 text-sm">Não me importo de pagar mais pelas melhores marcas e ingredientes.</p>
+                </button>
+              </div>
+            </div>
+          )}
+
+          {/* TELA DE CARREGAMENTO */}
+          {step === 'loading' && (
+            <div className="absolute inset-0 bg-white flex flex-col items-center justify-center z-20">
+              <div className="w-16 h-16 border-4 border-emerald-100 border-t-emerald-500 rounded-full animate-spin mb-4"></div>
+              <h3 className="text-xl font-bold text-slate-800 animate-pulse">Analisando seu perfil...</h3>
+              <p className="text-slate-500 mt-2">Selecionando os melhores produtos</p>
+            </div>
+          )}
+
+          {/* RESULTADOS */}
+          {step === 'results' && (
+            <div className="p-8 md:p-12 animate-fade-in">
+              <div className="text-center mb-8">
+                <h2 className="text-2xl font-bold text-slate-800">Sua Recomendação Personalizada</h2>
+                <p className="text-slate-600 mt-2">Com base no seu objetivo de <strong>{selectedGoal === 'mass' ? 'Ganhar Massa' : selectedGoal === 'weight_loss' ? 'Emagrecer' : 'Ter Energia'}</strong>:</p>
+              </div>
+
+              <div className="grid gap-6 mb-8">
+                {recommendations.map((produto, index) => (
+                  <div key={produto.id} className="flex flex-col md:flex-row items-center bg-slate-50 rounded-xl p-4 border border-slate-200 shadow-sm relative">
+                    <div className="absolute -top-3 -left-3 bg-slate-800 text-white w-8 h-8 flex items-center justify-center rounded-full font-bold shadow-md">
+                      {index + 1}
+                    </div>
+                    <div className="relative w-24 h-24 flex-shrink-0 bg-white rounded-lg border border-slate-200 p-2 mb-4 md:mb-0 md:mr-6">
+                      <Image src={produto.imagemUrl} alt={produto.nome} fill style={{ objectFit: 'contain' }} />
+                    </div>
+                    <div className="flex-grow text-center md:text-left">
+                      <p className="text-xs text-emerald-600 font-bold uppercase">{produto.categoria}</p>
+                      <h3 className="text-lg font-bold text-slate-900 leading-tight">{produto.nome}</h3>
+                      <p className="text-sm text-slate-500 mt-1">{produto.pontosPositivos[0]}</p>
+                    </div>
+                    <div className="mt-4 md:mt-0 md:ml-6 flex flex-col items-center min-w-[140px]">
+                      <span className="text-xl font-bold text-slate-800 mb-2">R$ {produto.precoMedioEmReais.toFixed(2)}</span>
+                      <Link href={`/produto/${produto.slug}`} className="bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-2 px-6 rounded-lg text-sm transition-colors w-full text-center">
+                        Ver Detalhes
+                      </Link>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              <div className="text-center">
+                <button onClick={resetQuiz} className="text-slate-500 hover:text-emerald-600 font-medium underline underline-offset-4">
+                  Refazer o teste
+                </button>
+              </div>
+            </div>
+          )}
+
+        </div>
+      </div>
     </div>
   );
 }

@@ -1,34 +1,124 @@
 import Link from 'next/link';
-import { listaDeCategorias } from '@/data/categorias'; // AGORA IMPORTAMOS AS CATEGORIAS
+import { listaDeCategorias } from '@/data/categorias';
+import { listaDeProdutos } from '@/data/produtos';
+import Image from 'next/image';
 
 export default function Home() {
+  // Seleciona manualmente 3 produtos para destaque (IDs: 1-Whey Dux, 20-Creatina Soldiers, 41-Pre Treino Diablo)
+  // Certifique-se de que esses IDs existem no seu produtos.ts, senão troque pelos que existem
+  const destaques = [1, 20, 41].map(id => listaDeProdutos.find(p => p.id === id)).filter(Boolean);
+
   return (
-    <div className="container mx-auto py-10 px-4">
-      <div className="text-center mb-12">
-        <h2 className="text-3xl font-extrabold text-slate-800 sm:text-4xl">
-          Explore por Categoria
-        </h2>
-        <p className="mt-4 text-lg text-slate-600">
-          Encontre o suplemento ideal para o seu objetivo.
-        </p>
+    <div className="bg-slate-50 min-h-screen">
+      {/* HERO SECTION: O Topo Impactante */}
+      <div className="relative bg-slate-900 text-white overflow-hidden pb-20">
+        <div className="absolute inset-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')]"></div>
+        <div className="container mx-auto px-4 py-24 relative z-10 text-center">
+          <span className="inline-block py-1 px-3 rounded-full bg-emerald-500/20 text-emerald-300 text-sm font-bold mb-4 border border-emerald-500/30 animate-fade-in">
+            GUIA DEFINITIVO 2025
+          </span>
+          <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight leading-tight mb-6">
+            Pare de Jogar Dinheiro Fora <br/> com <span className="text-emerald-400">Suplementos Ruins</span>
+          </h1>
+          <p className="text-lg md:text-xl text-slate-300 max-w-2xl mx-auto mb-10 font-light">
+            Análises honestas, comparativos diretos e os melhores preços do Mercado Livre selecionados por quem entende do assunto.
+          </p>
+          <div className="flex justify-center gap-4">
+            <a href="#categorias" className="bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-3 px-8 rounded-full transition-all transform hover:scale-105 shadow-[0_0_20px_rgba(16,185,129,0.4)]">
+              Ver Recomendações
+            </a>
+          </div>
+        </div>
       </div>
 
-      {/* NOVO GRID DE CATEGORIAS */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        
-        {listaDeCategorias.map((categoria) => (
-          <Link href={`/categoria/${categoria.id}`} key={categoria.id} className="block group">
-            <div className="bg-white rounded-lg shadow-lg p-8 h-full flex flex-col items-center text-center transform hover:-translate-y-2 transition-transform duration-300">
-              <h3 className="text-2xl font-bold text-slate-800">{categoria.nome}</h3>
-              <p className="text-slate-600 mt-2 flex-grow">{categoria.descricao}</p>
-              <span className="mt-6 inline-block bg-blue-600 text-white font-bold py-3 px-6 rounded-lg group-hover:bg-blue-700 transition-colors">
-                Ver Opções e Preços
-              </span>
-            </div>
-          </Link>
-        ))}
-
+      {/* DESTAQUES DA SEMANA (Flutuando sobre o Hero) */}
+      <div className="container mx-auto px-4 relative z-20 mt-[-60px] mb-16">
+        <div className="bg-white rounded-2xl shadow-xl border border-slate-100 p-6 md:p-8">
+          <h3 className="text-lg font-bold text-slate-800 mb-6 flex items-center gap-2">
+            <span className="text-2xl">🔥</span> Destaques da Semana
+          </h3>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {destaques.map((prod) => prod && (
+              <Link href={`/produto/${prod.slug}`} key={prod.id} className="flex items-center gap-4 p-4 rounded-xl hover:bg-slate-50 transition-all border border-transparent hover:border-slate-200 group">
+                <div className="relative w-20 h-20 flex-shrink-0 bg-white rounded-lg p-2 border border-slate-100">
+                  <Image src={prod.imagemUrl} alt={prod.nome} fill className="object-contain group-hover:scale-110 transition-transform" />
+                </div>
+                <div>
+                  <p className="text-[10px] font-bold text-emerald-600 uppercase tracking-wider">{prod.categoria}</p>
+                  <h4 className="font-bold text-slate-800 text-sm leading-tight line-clamp-2">{prod.nome}</h4>
+                  <p className="text-xs text-slate-500 mt-1 group-hover:text-blue-600 transition-colors">Ler análise &rarr;</p>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </div>
       </div>
+
+      {/* LISTA DE CATEGORIAS */}
+      <div id="categorias" className="container mx-auto pb-20 px-4">
+        <div className="text-center mb-12">
+          <h2 className="text-3xl font-bold text-slate-800 mb-2">O Que Você Procura Hoje?</h2>
+          <div className="w-16 h-1 bg-emerald-500 mx-auto rounded-full"></div>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {listaDeCategorias.map((categoria) => (
+            <Link href={`/categoria/${categoria.id}`} key={categoria.id} className="group">
+              <div className="bg-white rounded-2xl p-8 h-full border border-slate-100 shadow-md hover:shadow-2xl transition-all duration-300 transform group-hover:-translate-y-2">
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="text-2xl font-bold text-slate-800 group-hover:text-emerald-600 transition-colors">
+                    {categoria.nome}
+                  </h3>
+                  <span className="bg-slate-100 p-2 rounded-lg group-hover:bg-emerald-100 transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-6 h-6 text-slate-600 group-hover:text-emerald-600">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+                    </svg>
+                  </span>
+                </div>
+                <p className="text-slate-600 leading-relaxed">
+                  {categoria.descricao}
+                </p>
+              </div>
+            </Link>
+          ))}
+        </div>
+      </div>
+
+      {/* SEÇÃO DE NEWSLETTER / WHATSAPP VIP */}
+      <div className="bg-slate-900 py-20 px-4">
+        <div className="container mx-auto max-w-4xl text-center">
+          <span className="inline-block bg-emerald-500/20 text-emerald-400 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider mb-4 border border-emerald-500/30">
+            Comunidade Exclusiva
+          </span>
+          <h2 className="text-3xl md:text-4xl font-extrabold text-white mb-6">
+            Receba Ofertas Relâmpago de Suplementos
+          </h2>
+          <p className="text-slate-400 text-lg mb-10 max-w-2xl mx-auto">
+            Não fazemos spam. Enviamos apenas cupons de desconto reais e alertas quando os preços do Whey e Creatina caem no Mercado Livre.
+          </p>
+          
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+            <input 
+              type="email" 
+              placeholder="Seu melhor e-mail" 
+              className="px-6 py-4 rounded-full text-slate-800 focus:outline-none focus:ring-2 focus:ring-emerald-500 w-full sm:w-auto sm:min-w-[300px] opacity-70 cursor-not-allowed"
+              disabled
+            />
+            <a 
+              href="https://wa.me/?text=Quero%20entrar%20na%20lista%20VIP"
+              target="_blank"
+              className="bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-4 px-8 rounded-full transition-all shadow-[0_0_20px_rgba(16,185,129,0.4)] whitespace-nowrap flex items-center justify-center gap-2 w-full sm:w-auto"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M13.601 2.326A7.854 7.854 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.933 7.933 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.898 7.898 0 0 0 13.6 2.326zM7.994 14.521a6.573 6.573 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.557 6.557 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592zm3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.729.729 0 0 0-.529.247c-.182.198-.691.677-.691 1.654 0 .977.71 1.916.81 2.049.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232z"/>
+              </svg>
+              Entrar no Grupo VIP
+            </a>
+          </div>
+          <p className="text-xs text-slate-500 mt-4">Junte-se a mais de 500 membros que economizam todo mês.</p>
+        </div>
+      </div>
+
     </div>
   );
 }
