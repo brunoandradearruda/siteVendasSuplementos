@@ -16,7 +16,6 @@ export interface DiaTreino {
 export interface RotinaTreino {
   id: string;
   nome: string;
-  // CORREÇÃO: Adicionamos 'Todos' como uma opção válida aqui
   nivel: 'Iniciante' | 'Intermediário' | 'Avançado' | 'Todos';
   objetivo: string;
   descricao: string;
@@ -102,7 +101,7 @@ export const listaDeTreinos: RotinaTreino[] = [
   {
     id: 'emagrecimento',
     nome: 'Circuito Metabólico',
-    nivel: 'Todos', // Agora isso é permitido!
+    nivel: 'Todos',
     objetivo: 'Queima de Gordura',
     descricao: 'Treino com pouco descanso para manter a frequência cardíaca alta e maximizar o gasto calórico.',
     dias: [

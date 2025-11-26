@@ -11,8 +11,6 @@ export default function SobrePage() {
   return (
     <div className="bg-slate-50 min-h-screen py-16 px-4">
       <div className="container mx-auto max-w-4xl">
-        
-        {/* Cabeçalho */}
         <div className="text-center mb-16">
           <h1 className="text-4xl md:text-5xl font-extrabold text-slate-800 mb-6">
             Nossa missão é simplificar a sua <span className="text-emerald-600">evolução</span>.
@@ -22,15 +20,16 @@ export default function SobrePage() {
           </p>
         </div>
 
-        {/* Bloco de História/Valor */}
         <div className="bg-white rounded-3xl shadow-xl overflow-hidden mb-12">
           <div className="grid grid-cols-1 md:grid-cols-2">
             <div className="relative h-64 md:h-auto bg-slate-800">
-              {/* Imagem ilustrativa de "equipe" ou academia */}
-              <img 
+              {/* CORREÇÃO: Uso de Image */}
+              <Image 
                 src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=1000&auto=format&fit=crop" 
                 alt="Equipe na academia" 
-                className="absolute inset-0 w-full h-full object-cover opacity-80"
+                fill
+                style={{ objectFit: 'cover' }}
+                className="opacity-80"
               />
             </div>
             <div className="p-10 md:p-14 flex flex-col justify-center">
@@ -55,7 +54,6 @@ export default function SobrePage() {
           </div>
         </div>
 
-        {/* Bloco de Compromisso */}
         <div className="grid md:grid-cols-3 gap-8 text-center mb-16">
           <div className="bg-white p-8 rounded-2xl shadow-sm border border-slate-100">
             <span className="text-4xl mb-4 block">🔍</span>
@@ -74,7 +72,6 @@ export default function SobrePage() {
           </div>
         </div>
 
-        {/* CTA Final */}
         <div className="text-center bg-emerald-600 rounded-3xl p-10 md:p-16 text-white shadow-2xl shadow-emerald-200">
           <h2 className="text-3xl font-bold mb-4">Pronto para evoluir?</h2>
           <p className="text-emerald-100 mb-8 max-w-lg mx-auto">
@@ -87,7 +84,6 @@ export default function SobrePage() {
             Ver Tabela Comparativa
           </Link>
         </div>
-
       </div>
     </div>
   );

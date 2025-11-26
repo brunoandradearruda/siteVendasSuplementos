@@ -7,11 +7,9 @@ interface PageProps {
 }
 
 export default async function BuscaPage({ searchParams }: PageProps) {
-  // No Next.js 15, searchParams é uma Promise, precisamos do await
   const { q } = await searchParams;
   const termo = q?.toLowerCase() || '';
 
-  // Filtra produtos pelo Nome, Marca ou Categoria
   const resultados = listaDeProdutos.filter((produto) => 
     produto.nome.toLowerCase().includes(termo) ||
     produto.marca.toLowerCase().includes(termo) ||
@@ -22,7 +20,8 @@ export default async function BuscaPage({ searchParams }: PageProps) {
     <div className="bg-slate-50 min-h-screen py-10">
       <div className="container mx-auto px-4">
         <h1 className="text-3xl font-bold text-slate-800 mb-8">
-          Resultados para: <span className="text-emerald-600">"{q}"</span>
+          {/* CORREÇÃO: Aspas corrigidas */}
+          Resultados para: <span className="text-emerald-600">&quot;{q}&quot;</span>
         </h1>
 
         {resultados.length > 0 ? (
@@ -33,7 +32,6 @@ export default async function BuscaPage({ searchParams }: PageProps) {
                     <div className="relative w-full h-64 bg-white p-6 flex items-center justify-center">
                       <Image src={produto.imagemUrl} alt={produto.nome} fill style={{objectFit: 'contain'}} className="p-4 group-hover:scale-105 transition-transform duration-300" />
                     </div>
-                    
                     <div className="p-6 flex-grow flex flex-col border-t border-slate-50 bg-slate-50/50">
                       <span className="text-xs font-bold text-emerald-600 uppercase tracking-wide mb-2">{produto.marca}</span>
                       <h2 className="text-xl font-bold text-slate-800 leading-snug mb-2 group-hover:text-blue-600 transition-colors">{produto.nome}</h2>

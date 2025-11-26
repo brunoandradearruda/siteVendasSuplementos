@@ -5,7 +5,6 @@ import { listaDeProdutos, Produto } from '@/data/produtos';
 import Link from 'next/link';
 import Image from 'next/image';
 
-// Definição das etapas do Quiz
 type Step = 'goal' | 'budget' | 'loading' | 'results';
 type Goal = 'mass' | 'weight_loss' | 'energy';
 type Budget = 'economy' | 'premium';
@@ -13,54 +12,38 @@ type Budget = 'economy' | 'premium';
 export default function GuiaPage() {
   const [step, setStep] = useState<Step>('goal');
   const [selectedGoal, setSelectedGoal] = useState<Goal | null>(null);
-  const [selectedBudget, setSelectedBudget] = useState<Budget | null>(null);
+  // selectedBudget removido pois não estava sendo usado no render
   const [recommendations, setRecommendations] = useState<Produto[]>([]);
 
-  // Lógica de Recomendação
   const calculateRecommendations = (goal: Goal, budget: Budget) => {
     let filtered: Produto[] = [];
 
-    // 1. Filtrar por Categoria baseada no Objetivo
     if (goal === 'mass') {
-      // Massa: Foco em Whey e Creatina (e Hipercalórico se for muito magro, mas vamos focar no básico)
       filtered = listaDeProdutos.filter(p => p.categoryId === 'proteina' || p.categoryId === 'creatina' || p.categoryId === 'hipercalorico');
     } else if (goal === 'weight_loss') {
-      // Perder peso: Foco em Whey (saciadade) e talvez termogenicos (se tivessemos)
       filtered = listaDeProdutos.filter(p => p.categoryId === 'proteina' || p.categoryId === 'albumina');
     } else if (goal === 'energy') {
-      // Energia: Pré-treinos e Creatina
       filtered = listaDeProdutos.filter(p => p.categoryId === 'pre-treino' || p.categoryId === 'creatina');
     }
 
-    // 2. Filtrar por Orçamento
-    // Vamos separar grosseiramente por preço médio ou marcas conhecidas por serem custo-benefício vs premium
-    let finalSelection: Produto[] = [];
+    // CORREÇÃO: 'let' mudado para 'const' pois é um array que manipulamos métodos, mas a referência não muda
+    const finalSelection: Produto[] = [];
 
     if (budget === 'economy') {
-      // Ordena por menor preço e pega os primeiros de categorias diferentes
       const sorted = [...filtered].sort((a, b) => a.precoMedioEmReais - b.precoMedioEmReais);
-      
-      // Tenta pegar um de cada categoria principal para montar um kit barato
       const prod1 = sorted[0];
       const prod2 = sorted.find(p => p.categoryId !== prod1?.categoryId);
-      
       if (prod1) finalSelection.push(prod1);
       if (prod2) finalSelection.push(prod2);
-
     } else {
-      // Premium: Ordena por maior preço (geralmente correlacionado a marcas premium/isolados)
       const sorted = [...filtered].sort((a, b) => b.precoMedioEmReais - a.precoMedioEmReais);
-      
-      const prod1 = sorted[0]; // O mais caro (provavelmente o melhor whey)
-      const prod2 = sorted.find(p => p.categoryId !== prod1?.categoryId); // O melhor complemento
-      
+      const prod1 = sorted[0];
+      const prod2 = sorted.find(p => p.categoryId !== prod1?.categoryId);
       if (prod1) finalSelection.push(prod1);
       if (prod2) finalSelection.push(prod2);
     }
 
     setRecommendations(finalSelection);
-    
-    // Simula um tempo de "processamento" para dar ar de inteligência artificial
     setStep('loading');
     setTimeout(() => setStep('results'), 1500);
   };
@@ -71,7 +54,7 @@ export default function GuiaPage() {
   };
 
   const handleBudgetSelect = (budget: Budget) => {
-    setSelectedBudget(budget);
+    // Removido o setSelectedBudget daqui pois não é usado
     if (selectedGoal) {
       calculateRecommendations(selectedGoal, budget);
     }
@@ -80,15 +63,13 @@ export default function GuiaPage() {
   const resetQuiz = () => {
     setStep('goal');
     setSelectedGoal(null);
-    setSelectedBudget(null);
+    // setSelectedBudget(null); // Removido
     setRecommendations([]);
   };
 
   return (
     <div className="bg-slate-50 min-h-screen py-12 px-4">
       <div className="container mx-auto max-w-3xl">
-        
-        {/* CABEÇALHO DO QUIZ */}
         <div className="text-center mb-10">
           <span className="bg-blue-100 text-blue-700 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">
             Consultor Virtual
@@ -101,10 +82,8 @@ export default function GuiaPage() {
           </p>
         </div>
 
-        {/* ÁREA DO QUIZ */}
         <div className="bg-white rounded-3xl shadow-xl border border-slate-100 overflow-hidden min-h-[400px] relative">
           
-          {/* PASSO 1: OBJETIVO */}
           {step === 'goal' && (
             <div className="p-8 md:p-12 animate-fade-in">
               <h2 className="text-2xl font-bold text-slate-800 mb-8 text-center">Qual é o seu objetivo principal?</h2>
@@ -134,7 +113,6 @@ export default function GuiaPage() {
             </div>
           )}
 
-          {/* PASSO 2: ORÇAMENTO */}
           {step === 'budget' && (
             <div className="p-8 md:p-12 animate-fade-in">
               <button onClick={() => setStep('goal')} className="text-sm text-slate-400 hover:text-slate-600 mb-6 flex items-center gap-1">← Voltar</button>
@@ -154,7 +132,6 @@ export default function GuiaPage() {
             </div>
           )}
 
-          {/* TELA DE CARREGAMENTO */}
           {step === 'loading' && (
             <div className="absolute inset-0 bg-white flex flex-col items-center justify-center z-20">
               <div className="w-16 h-16 border-4 border-emerald-100 border-t-emerald-500 rounded-full animate-spin mb-4"></div>
@@ -163,7 +140,6 @@ export default function GuiaPage() {
             </div>
           )}
 
-          {/* RESULTADOS */}
           {step === 'results' && (
             <div className="p-8 md:p-12 animate-fade-in">
               <div className="text-center mb-8">

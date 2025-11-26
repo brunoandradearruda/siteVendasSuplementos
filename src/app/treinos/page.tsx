@@ -1,11 +1,14 @@
 "use client";
 
 import { useState } from 'react';
-import { listaDeTreinos, RotinaTreino } from '@/data/treinos';
+// AQUI ESTAVA O ERRO: Importe diretamente do caminho relativo se o alias @ não funcionar
+import { listaDeTreinos, RotinaTreino } from '@/data/treinos'; 
 import Link from 'next/link';
 
 export default function TreinosPage() {
-  const [treinoAtivo, setTreinoAtivo] = useState<RotinaTreino>(listaDeTreinos[1]); // Começa com Hipertrofia selecionado
+  // Garante que a lista existe antes de tentar acessar o índice [1]
+  const treinoInicial = listaDeTreinos.length > 1 ? listaDeTreinos[1] : listaDeTreinos[0];
+  const [treinoAtivo, setTreinoAtivo] = useState<RotinaTreino>(treinoInicial);
 
   return (
     <div className="bg-slate-50 min-h-screen py-10">
@@ -51,7 +54,8 @@ export default function TreinosPage() {
               </div>
               <span className={`mt-4 md:mt-0 px-4 py-2 rounded-lg text-sm font-bold uppercase tracking-wide ${
                 treinoAtivo.nivel === 'Iniciante' ? 'bg-green-100 text-green-700' : 
-                treinoAtivo.nivel === 'Intermediário' ? 'bg-blue-100 text-blue-700' : 'bg-orange-100 text-orange-700'
+                treinoAtivo.nivel === 'Intermediário' ? 'bg-blue-100 text-blue-700' : 
+                treinoAtivo.nivel === 'Avançado' ? 'bg-red-100 text-red-700' : 'bg-orange-100 text-orange-700'
               }`}>
                 Nível: {treinoAtivo.nivel}
               </span>
@@ -97,7 +101,7 @@ export default function TreinosPage() {
                     </table>
                   </div>
 
-                  {/* DICA DE SUPLEMENTO (VENDA CRUZADA) */}
+                  {/* DICA DE SUPLEMENTO */}
                   <div className="mt-6 bg-blue-50 border border-blue-100 p-4 rounded-xl flex flex-col sm:flex-row items-center justify-between gap-4">
                     <div className="flex items-center gap-3">
                       <span className="text-2xl">💊</span>
