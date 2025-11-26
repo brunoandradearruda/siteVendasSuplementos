@@ -1,20 +1,21 @@
 "use client";
 
 import { useState } from 'react';
-// CORREÇÃO: Usando caminho relativo para garantir que o arquivo seja encontrado
-import { listaDeTreinos, RotinaTreino } from '../../data/treinos'; 
+import { listaDeTreinos, RotinaTreino } from '@/data/treinos'; 
 import Link from 'next/link';
 
 export default function TreinosPage() {
-  // Garante que a lista existe e tem itens antes de tentar acessar
+  // 1. Definimos o valor inicial (sem retornar nada ainda)
   const treinoInicial = listaDeTreinos && listaDeTreinos.length > 0 ? listaDeTreinos[0] : null;
   
-  // Se por algum motivo a lista estiver vazia ou indefinida, evitamos o crash
-  if (!treinoInicial) {
-    return <div className="p-10 text-center">Carregando treinos...</div>;
-  }
+  // 2. Chamamos o Hook (AGORA ESTÁ NO LUGAR CERTO: Antes de qualquer return)
+  // Precisamos dizer que o estado pode ser RotinaTreino OU null
+  const [treinoAtivo, setTreinoAtivo] = useState<RotinaTreino | null>(treinoInicial);
 
-  const [treinoAtivo, setTreinoAtivo] = useState<RotinaTreino>(treinoInicial);
+  // 3. Agora sim, podemos fazer a verificação e retornar o "Carregando" se necessário
+  if (!treinoAtivo) {
+    return <div className="p-20 text-center text-slate-500">Carregando treinos ou nenhum treino encontrado...</div>;
+  }
 
   return (
     <div className="bg-slate-50 min-h-screen py-10">
@@ -29,7 +30,7 @@ export default function TreinosPage() {
             Fichas de Treino Gratuitas
           </h1>
           <p className="text-slate-600 text-lg max-w-2xl mx-auto">
-            Selecione seu objetivo abaixo e acesse uma rotina completa preparada para otimizar seus resultados junto com a suplementação.
+            Selecione seu objetivo abaixo e acesse uma rotina completa preparada para otimizar seus resultados.
           </p>
         </div>
 
@@ -67,7 +68,6 @@ export default function TreinosPage() {
               </span>
             </div>
 
-            {/* LISTA DE DIAS */}
             <div className="grid gap-8">
               {treinoAtivo.dias.map((dia, idx) => (
                 <div key={idx} className="bg-slate-50 rounded-2xl p-6 border border-slate-200">
@@ -83,7 +83,6 @@ export default function TreinosPage() {
                     </div>
                   </div>
 
-                  {/* TABELA DE EXERCÍCIOS */}
                   <div className="overflow-x-auto">
                     <table className="w-full text-left text-sm">
                       <thead className="bg-slate-200 text-slate-700 uppercase text-xs">
@@ -107,7 +106,6 @@ export default function TreinosPage() {
                     </table>
                   </div>
 
-                  {/* DICA DE SUPLEMENTO */}
                   <div className="mt-6 bg-blue-50 border border-blue-100 p-4 rounded-xl flex flex-col sm:flex-row items-center justify-between gap-4">
                     <div className="flex items-center gap-3">
                       <span className="text-2xl">💊</span>
@@ -120,13 +118,11 @@ export default function TreinosPage() {
                       Ver Melhores Opções
                     </Link>
                   </div>
-
                 </div>
               ))}
             </div>
           </div>
         </div>
-
       </div>
     </div>
   );
