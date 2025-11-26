@@ -42,6 +42,15 @@ export default function Header() {
             >
               Comparador
             </Link>
+            
+            {/* Link Duelo em Destaque */}
+            <Link 
+              href="/duelo" 
+              className={`transition-colors ${isLinkActive('/duelo') ? 'text-red-600 font-bold' : 'text-slate-600 hover:text-red-600'}`}
+            >
+              Duelo 1x1 🔥
+            </Link>
+
             <Link 
               href="/guia" 
               className={`transition-colors ${isLinkActive('/guia') ? 'text-emerald-600' : 'text-slate-600 hover:text-emerald-600'}`}

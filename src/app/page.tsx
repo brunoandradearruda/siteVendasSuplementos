@@ -4,13 +4,53 @@ import { listaDeProdutos } from '@/data/produtos';
 import Image from 'next/image';
 
 export default function Home() {
-  // Seleciona manualmente 3 produtos para destaque (IDs: 1-Whey Dux, 20-Creatina Soldiers, 41-Pre Treino Diablo)
-  // Certifique-se de que esses IDs existem no seu produtos.ts, senão troque pelos que existem
+  // Seleciona produtos para destaque (Whey Dux, Creatina Soldiers, Pré Diablo)
+  // Certifique-se de que os IDs 1, 20 e 41 existem no seu produtos.ts
   const destaques = [1, 20, 41].map(id => listaDeProdutos.find(p => p.id === id)).filter(Boolean);
+
+  // Lista de vídeos educativos expandida para todas as categorias
+  const videosEducativos = [
+    {
+      titulo: "Whey Protein: O Guia Definitivo",
+      canal: "Leandro Twin",
+      id: "Scg-kUEFz2g", 
+      categoria: "Proteína"
+    },
+    {
+      titulo: "Tudo sobre Creatina (Mitos e Verdades)",
+      canal: "Renato Cariani",
+      id: "hM4hC40M3qU",
+      categoria: "Creatina"
+    },
+    {
+      titulo: "Qual o Melhor Pré-Treino para Você?",
+      canal: "Gorgonoid",
+      id: "6M2q3s4t5u", // Exemplo
+      categoria: "Pré-Treino"
+    },
+    {
+      titulo: "Hipercalórico: Como tomar sem ganhar barriga?",
+      canal: "Leandro Twin",
+      id: "lWJ6V7x0_IQ", // ID real de vídeo sobre hipercalórico
+      categoria: "Hipercalórico"
+    },
+    {
+      titulo: "BCAA: Ainda vale a pena tomar?",
+      canal: "Paulo Muzy",
+      id: "_Z1A2B3C4d", // ID Exemplo
+      categoria: "BCAA"
+    },
+    {
+      titulo: "Albumina: A Proteína Barata que Funciona",
+      canal: "Gorgonoid",
+      id: "Xy9Z8w7v6u", // ID Exemplo
+      categoria: "Albumina"
+    }
+  ];
 
   return (
     <div className="bg-slate-50 min-h-screen">
-      {/* HERO SECTION: O Topo Impactante */}
+      {/* HERO SECTION */}
       <div className="relative bg-slate-900 text-white overflow-hidden pb-20">
         <div className="absolute inset-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')]"></div>
         <div className="container mx-auto px-4 py-24 relative z-10 text-center">
@@ -31,7 +71,7 @@ export default function Home() {
         </div>
       </div>
 
-      {/* DESTAQUES DA SEMANA (Flutuando sobre o Hero) */}
+      {/* DESTAQUES DA SEMANA */}
       <div className="container mx-auto px-4 relative z-20 mt-[-60px] mb-16">
         <div className="bg-white rounded-2xl shadow-xl border border-slate-100 p-6 md:p-8">
           <h3 className="text-lg font-bold text-slate-800 mb-6 flex items-center gap-2">
@@ -55,7 +95,7 @@ export default function Home() {
       </div>
 
       {/* LISTA DE CATEGORIAS */}
-      <div id="categorias" className="container mx-auto pb-20 px-4">
+      <div id="categorias" className="container mx-auto pb-16 px-4">
         <div className="text-center mb-12">
           <h2 className="text-3xl font-bold text-slate-800 mb-2">O Que Você Procura Hoje?</h2>
           <div className="w-16 h-1 bg-emerald-500 mx-auto rounded-full"></div>
@@ -84,7 +124,45 @@ export default function Home() {
         </div>
       </div>
 
-      {/* SEÇÃO DE NEWSLETTER / WHATSAPP VIP */}
+      {/* NOVA SEÇÃO: VÍDEOS DE ESPECIALISTAS (Expandida) */}
+      <div className="bg-slate-100 py-16 border-t border-slate-200">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-slate-800 mb-2 flex items-center justify-center gap-2">
+              <span className="text-red-600">▶</span> Aprenda com Especialistas
+            </h2>
+            <p className="text-slate-600">Entenda como cada suplemento age no seu corpo antes de comprar.</p>
+          </div>
+
+          {/* Grid adaptado para múltiplos vídeos */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {videosEducativos.map((video, index) => (
+              <div key={index} className="bg-white rounded-2xl overflow-hidden shadow-lg border border-slate-200 hover:shadow-2xl transition-shadow flex flex-col">
+                <div className="relative w-full aspect-video bg-black">
+                  {/* Nota: Em um site real, você trocaria os IDs abaixo pelos vídeos exatos que deseja */}
+                  <iframe
+                    src={`https://www.youtube.com/embed/${video.id}`}
+                    title={video.titulo}
+                    className="absolute top-0 left-0 w-full h-full"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                    loading="lazy"
+                  ></iframe>
+                </div>
+                <div className="p-5 flex-grow flex flex-col">
+                  <span className="text-xs font-bold text-emerald-600 uppercase tracking-wider mb-1">{video.categoria}</span>
+                  <h3 className="text-lg font-bold text-slate-800 leading-tight mb-2">{video.titulo}</h3>
+                  <p className="text-sm text-slate-500 mt-auto flex items-center gap-1">
+                    <span className="w-2 h-2 bg-red-500 rounded-full"></span> {video.canal}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* NEWSLETTER / WHATSAPP VIP */}
       <div className="bg-slate-900 py-20 px-4">
         <div className="container mx-auto max-w-4xl text-center">
           <span className="inline-block bg-emerald-500/20 text-emerald-400 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider mb-4 border border-emerald-500/30">

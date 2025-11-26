@@ -4,6 +4,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import "./globals.css";
+import SalesNotification from "@/components/SalesNotification";
 
 const poppins = Poppins({ 
   subsets: ["latin"],
@@ -26,6 +27,12 @@ export const metadata: Metadata = {
   },
 };
 
+
+
+
+
+
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -41,6 +48,7 @@ export default function RootLayout({
           </main>
           <Footer />
           <WhatsAppButton />
+          <SalesNotification /> {/* ADICIONE AQUI */}
         </div>
       </body>
     </html>
