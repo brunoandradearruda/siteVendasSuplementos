@@ -1,20 +1,10 @@
 "use client";
 
-import { useState, useMemo } from 'react';
+import { useState } from 'react';
 import { listaDeProdutos, Produto } from '@/data/produtos';
 import Image from 'next/image';
 import Link from 'next/link';
 
-// Interface para evitar erro de 'undefined' no sort
-interface ProdutoCalculado extends Produto {
-  dosesPorEmbalagem: number;
-  custoPorDose: number;
-}
-
-// Define quais chaves são seguras para ordenação
-type SortableKeys = 'nome' | 'precoMedioEmReais' | 'dosesPorEmbalagem' | 'custoPorDose';
-
-// Função auxiliar para métricas
 const getMetrics = (p: Produto) => {
   const doses = p.dosePadraoEmGramas > 0 ? p.pesoEmGramas / p.dosePadraoEmGramas : 0;
   const custoDose = doses > 0 ? p.precoMedioEmReais / doses : 0;
@@ -24,8 +14,6 @@ const getMetrics = (p: Produto) => {
 export default function DueloPage() {
   const [prod1Id, setProd1Id] = useState<number>(listaDeProdutos[0].id);
   const [prod2Id, setProd2Id] = useState<number>(listaDeProdutos[1]?.id || listaDeProdutos[0].id);
-  // Estado para a tabela de baixo
-  const [sortConfig, setSortConfig] = useState<{ key: SortableKeys, direction: 'ascending' | 'descending' }>({ key: 'custoPorDose', direction: 'ascending' });
 
   const p1 = listaDeProdutos.find(p => p.id === prod1Id)!;
   const p2 = listaDeProdutos.find(p => p.id === prod2Id)!;
@@ -38,28 +26,6 @@ export default function DueloPage() {
     if (type === 'min') return val1 < val2 ? 'p1' : 'p2';
     return val1 > val2 ? 'p1' : 'p2';
   };
-
-  // Aqui usamos o useMemo para garantir que a tabela de baixo seja ordenada
-  const produtosOrdenados = useMemo(() => {
-    // Filtramos apenas os dois produtos do duelo para a tabela
-    const produtosDoDuelo = [p1, p2].map(p => {
-      const metricas = getMetrics(p);
-      return { 
-        ...p, 
-        dosesPorEmbalagem: metricas.doses, 
-        custoPorDose: metricas.custoDose 
-      } as ProdutoCalculado;
-    });
-
-    return produtosDoDuelo.sort((a, b) => {
-      const valA = a[sortConfig.key];
-      const valB = b[sortConfig.key];
-      if (valA === undefined || valB === undefined) return 0;
-      if (valA < valB) return sortConfig.direction === 'ascending' ? -1 : 1;
-      if (valA > valB) return sortConfig.direction === 'ascending' ? 1 : -1;
-      return 0;
-    });
-  }, [p1, p2, sortConfig]);
 
   return (
     <div className="bg-slate-50 min-h-screen py-12 px-4">
@@ -74,7 +40,6 @@ export default function DueloPage() {
           </h1>
         </header>
 
-        {/* SELETORES */}
         <div className="bg-white rounded-3xl shadow-xl border border-slate-200 p-6 mb-10">
           <div className="flex flex-col md:flex-row gap-8 items-center justify-center">
             <div className="w-full md:w-1/3">
@@ -89,7 +54,6 @@ export default function DueloPage() {
           </div>
         </div>
 
-        {/* CARDS LADO A LADO */}
         <div className="grid grid-cols-2 gap-4 md:gap-8 relative mb-12">
           {[p1, p2].map((p, idx) => {
              const metricas = idx === 0 ? m1 : m2;

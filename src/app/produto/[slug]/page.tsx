@@ -11,6 +11,14 @@ interface PageProps {
   params: Promise<{ slug: string }> 
 }
 
+// CORREÇÃO PARA EXPORTAÇÃO ESTÁTICA:
+// Diz ao Next.js quais páginas de produto ele deve gerar no build
+export async function generateStaticParams() {
+  return listaDeProdutos.map((produto) => ({
+    slug: produto.slug,
+  }));
+}
+
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params;
   const produto = listaDeProdutos.find(p => p.slug === slug);
@@ -25,8 +33,9 @@ export default async function ProdutoPage({ params }: PageProps) {
   const produto = listaDeProdutos.find(p => p.slug === slug);
   if (!produto) notFound();
 
-  const precoRealTime = await getPrecoAtualizado(produto.mlId);
-  const precoFinal = precoRealTime || produto.precoMedioEmReais;
+  // Em exportação estática, o preço realtime no servidor não funciona no build time da mesma forma.
+  // Usamos o preço médio como base. O ideal seria buscar no cliente (useEffect), mas para MVP estático, usaremos o base.
+  const precoFinal = produto.precoMedioEmReais; 
   const categoriaSlug = slugify(produto.categoria);
 
   const produtosRelacionados = listaDeProdutos
@@ -80,17 +89,11 @@ export default async function ProdutoPage({ params }: PageProps) {
               <div className="bg-slate-50 border border-slate-200 rounded-xl p-5 mb-8">
                 <p className="text-slate-700 italic text-lg">
                   <span className="not-italic text-2xl mr-2">💡</span>
-                  {/* CORREÇÃO: Aspas arrumadas */}
                   &quot;Ideal para quem busca <strong>{produto.pontosPositivos[0].toLowerCase()}</strong> com a confiabilidade da marca {produto.marca}.&quot;
                 </p>
               </div>
 
               <div className="bg-gradient-to-br from-emerald-50 to-white border border-emerald-200 p-6 rounded-2xl shadow-sm mb-10 relative overflow-hidden">
-                {precoRealTime && (
-                  <div className="absolute top-0 right-0 bg-emerald-500 text-white text-xs font-bold px-3 py-1 rounded-bl-xl animate-pulse">
-                    PREÇO ATUALIZADO
-                  </div>
-                )}
                 <p className="text-sm text-slate-500 mb-1">Melhor oferta encontrada no Mercado Livre:</p>
                 <div className="flex items-baseline gap-2 mb-4">
                   <span className="text-5xl font-extrabold text-emerald-600">R$ {precoFinal.toFixed(2).replace('.', ',')}</span>
@@ -99,7 +102,6 @@ export default async function ProdutoPage({ params }: PageProps) {
                 
                 <a href={produto.linkAfiliado} target="_blank" rel="noopener noreferrer" 
                    className="block w-full bg-[#2D3277] hover:bg-[#23265e] text-white text-center text-xl font-bold py-4 px-6 rounded-xl transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-1 flex items-center justify-center gap-3">
-                   {/* CORREÇÃO: Troca de img por Image com width/height definidos */}
                    <Image src="https://http2.mlstatic.com/frontend-assets/ui-navigation/5.18.9/mercadolibre/logo__small.png" alt="ML" width={30} height={30} className="h-6 w-auto" />
                    Comprar Agora com Segurança
                 </a>

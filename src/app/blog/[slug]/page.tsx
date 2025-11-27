@@ -2,11 +2,18 @@ import { listaDePosts } from '@/data/posts';
 import { listaDeProdutos } from '@/data/produtos';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
-import Image from 'next/image'; // Importar Image
+import Image from 'next/image';
 import type { Metadata } from 'next';
 
 interface PageProps {
   params: Promise<{ slug: string }>;
+}
+
+// CORREÇÃO PARA EXPORTAÇÃO ESTÁTICA
+export async function generateStaticParams() {
+  return listaDePosts.map((post) => ({
+    slug: post.id,
+  }));
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
@@ -28,10 +35,7 @@ export default async function PostPage({ params }: PageProps) {
 
   return (
     <div className="bg-white min-h-screen pb-20">
-      
-      {/* CABEÇALHO DO POST */}
       <div className="relative h-[400px] w-full bg-slate-900 flex items-center justify-center overflow-hidden">
-        {/* CORREÇÃO: Usar Image com fill */}
         <Image 
           src={post.imagemUrl} 
           alt={post.titulo} 
@@ -51,12 +55,10 @@ export default async function PostPage({ params }: PageProps) {
 
       <div className="container mx-auto px-4 max-w-3xl -mt-10 relative z-20">
         <div className="bg-white rounded-3xl shadow-xl p-8 md:p-12 border border-slate-100">
-          
           <article className="prose prose-slate prose-lg max-w-none text-slate-700">
             {post.conteudo.map((paragrafo, index) => (
               <div key={index}>
                 <p className="mb-6 leading-relaxed" dangerouslySetInnerHTML={{ __html: paragrafo }} />
-
                 {index === 1 && produtoRelacionado && (
                   <div className="my-10 bg-slate-50 border-l-4 border-emerald-500 p-6 rounded-r-xl shadow-sm not-prose flex flex-col sm:flex-row items-center gap-6">
                     <div className="relative w-24 h-24 flex-shrink-0 bg-white rounded-lg p-2 border border-slate-200">
@@ -74,13 +76,11 @@ export default async function PostPage({ params }: PageProps) {
               </div>
             ))}
           </article>
-
           <div className="mt-12 pt-8 border-t border-slate-200">
             <Link href="/blog" className="text-emerald-600 font-bold hover:underline">
               ← Voltar para o Blog
             </Link>
           </div>
-
         </div>
       </div>
     </div>

@@ -1,16 +1,9 @@
-/** @type {import('next').NextConfig} */
-const nextConfig = {
-  output: 'standalone',
+import type { NextConfig } from "next";
+
+const nextConfig: NextConfig = {
+  output: 'export', // Gera a pasta "out" com HTML estático
   images: {
-    remotePatterns: [
-      { protocol: 'https', hostname: 'images.tcdn.com.br' },
-      { protocol: 'https', hostname: 'integralmedica.vtexassets.com' },
-      { protocol: 'https', hostname: 'http2.mlstatic.com' },
-      { protocol: 'https', hostname: 'darklab.ind.br' },
-      { protocol: 'https', hostname: 'probiotica.vtexassets.com' },
-      // ADICIONADO: Autorização para imagens do blog (Unsplash)
-      { protocol: 'https', hostname: 'images.unsplash.com' },
-    ],
+    unoptimized: true, // Permite imagens sem servidor Node.js
   },
 };
 

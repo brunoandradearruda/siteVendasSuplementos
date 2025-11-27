@@ -2,11 +2,12 @@ import { MetadataRoute } from 'next';
 import { listaDeProdutos } from '@/data/produtos';
 import { listaDeCategorias } from '@/data/categorias';
 
-// ATENÇÃO: Mude isso para o seu domínio real quando comprar (ex: https://suplementospro.com.br)
+// CORREÇÃO: Força o arquivo a ser estático
+export const dynamic = 'force-static';
+
 const BASE_URL = 'https://www.seusite.com.br';
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  // 1. Páginas Estáticas (Home, Comparador, Guia)
   const rotasEstaticas = [
     {
       url: `${BASE_URL}`,
@@ -28,7 +29,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
   ];
 
-  // 2. Páginas de Categorias (Geradas dinamicamente)
   const rotasCategorias = listaDeCategorias.map((cat) => ({
     url: `${BASE_URL}/categoria/${cat.id}`,
     lastModified: new Date(),
@@ -36,11 +36,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.8,
   }));
 
-  // 3. Páginas de Produtos (Geradas dinamicamente - O mais importante!)
   const rotasProdutos = listaDeProdutos.map((prod) => ({
     url: `${BASE_URL}/produto/${prod.slug}`,
     lastModified: new Date(),
-    changeFrequency: 'daily' as const, // Preços mudam, então daily é bom
+    changeFrequency: 'daily' as const,
     priority: 0.9,
   }));
 
