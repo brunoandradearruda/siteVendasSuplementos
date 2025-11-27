@@ -34,7 +34,6 @@ export default function CalculadoraPage() {
     if (objetivo === 'perder') gastoTotal -= 500;
     if (objetivo === 'ganhar') gastoTotal += 500;
 
-    // CORREÇÃO: 'let' mudado para 'const' pois não são reatribuídos
     const proteinaG = p * 2; 
     const gorduraG = p * 0.8;
     
@@ -64,32 +63,37 @@ export default function CalculadoraPage() {
 
         <div className="bg-white rounded-3xl shadow-xl border border-slate-100 overflow-hidden">
           <form onSubmit={calcular} className="p-8 border-b border-slate-100">
+            
             <div className="grid grid-cols-2 gap-4 mb-4">
               <div>
                 <label className="block text-xs font-bold text-slate-500 uppercase mb-1">Gênero</label>
-                <select value={genero} onChange={(e) => setGenero(e.target.value)} className="w-full p-3 bg-slate-50 rounded-lg border border-slate-200 focus:border-purple-500 outline-none">
+                {/* CORREÇÃO: Adicionado text-slate-900 para ficar bem escuro */}
+                <select value={genero} onChange={(e) => setGenero(e.target.value)} className="w-full p-3 bg-slate-50 text-slate-900 font-medium rounded-lg border border-slate-200 focus:border-purple-500 outline-none">
                   <option value="masculino">Masculino</option>
                   <option value="feminino">Feminino</option>
                 </select>
               </div>
               <div>
                 <label className="block text-xs font-bold text-slate-500 uppercase mb-1">Idade</label>
-                <input type="number" value={idade} onChange={(e) => setIdade(e.target.value)} placeholder="Anos" className="w-full p-3 bg-slate-50 rounded-lg border border-slate-200 focus:border-purple-500 outline-none" required />
+                {/* CORREÇÃO: Adicionado text-slate-900 e placeholder-slate-400 */}
+                <input type="number" value={idade} onChange={(e) => setIdade(e.target.value)} placeholder="Anos" className="w-full p-3 bg-slate-50 text-slate-900 placeholder-slate-400 font-medium rounded-lg border border-slate-200 focus:border-purple-500 outline-none" required />
               </div>
             </div>
+
             <div className="grid grid-cols-2 gap-4 mb-4">
               <div>
                 <label className="block text-xs font-bold text-slate-500 uppercase mb-1">Peso (kg)</label>
-                <input type="number" value={peso} onChange={(e) => setPeso(e.target.value)} placeholder="KG" className="w-full p-3 bg-slate-50 rounded-lg border border-slate-200 focus:border-purple-500 outline-none" required />
+                <input type="number" value={peso} onChange={(e) => setPeso(e.target.value)} placeholder="KG" className="w-full p-3 bg-slate-50 text-slate-900 placeholder-slate-400 font-medium rounded-lg border border-slate-200 focus:border-purple-500 outline-none" required />
               </div>
               <div>
                 <label className="block text-xs font-bold text-slate-500 uppercase mb-1">Altura (cm)</label>
-                <input type="number" value={altura} onChange={(e) => setAltura(e.target.value)} placeholder="CM" className="w-full p-3 bg-slate-50 rounded-lg border border-slate-200 focus:border-purple-500 outline-none" required />
+                <input type="number" value={altura} onChange={(e) => setAltura(e.target.value)} placeholder="CM" className="w-full p-3 bg-slate-50 text-slate-900 placeholder-slate-400 font-medium rounded-lg border border-slate-200 focus:border-purple-500 outline-none" required />
               </div>
             </div>
+
             <div className="mb-4">
               <label className="block text-xs font-bold text-slate-500 uppercase mb-1">Nível de Atividade</label>
-              <select value={atividade} onChange={(e) => setAtividade(e.target.value)} className="w-full p-3 bg-slate-50 rounded-lg border border-slate-200 focus:border-purple-500 outline-none">
+              <select value={atividade} onChange={(e) => setAtividade(e.target.value)} className="w-full p-3 bg-slate-50 text-slate-900 font-medium rounded-lg border border-slate-200 focus:border-purple-500 outline-none">
                 <option value="1.2">Sedentário (Pouco ou nenhum exercício)</option>
                 <option value="1.375">Levemente ativo (Exercício leve 1-3 dias/sem)</option>
                 <option value="1.55">Moderadamente ativo (Exercício moderado 3-5 dias/sem)</option>
@@ -97,27 +101,32 @@ export default function CalculadoraPage() {
                 <option value="1.9">Extremamente ativo (Trabalho físico ou treino 2x dia)</option>
               </select>
             </div>
+
             <div className="mb-6">
               <label className="block text-xs font-bold text-slate-500 uppercase mb-1">Objetivo</label>
-              <select value={objetivo} onChange={(e) => setObjetivo(e.target.value)} className="w-full p-3 bg-slate-50 rounded-lg border border-slate-200 focus:border-purple-500 outline-none">
+              <select value={objetivo} onChange={(e) => setObjetivo(e.target.value)} className="w-full p-3 bg-slate-50 text-slate-900 font-medium rounded-lg border border-slate-200 focus:border-purple-500 outline-none">
                 <option value="perder">Perder Peso (Definição)</option>
                 <option value="manter">Manter Peso Atual</option>
                 <option value="ganhar">Ganhar Massa (Bulking)</option>
               </select>
             </div>
+
             <button type="submit" className="w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-4 rounded-xl transition-all shadow-lg hover:shadow-purple-200 transform hover:-translate-y-1">
               Calcular Meus Macros
             </button>
           </form>
+
           {resultado && (
             <div className="p-8 bg-purple-50 animate-fade-in">
               <h3 className="text-center text-slate-800 font-bold text-xl mb-6">Sua Meta Diária</h3>
+              
               <div className="flex justify-center mb-8">
                 <div className="text-center">
                   <span className="text-4xl font-extrabold text-purple-700">{resultado.calorias}</span>
                   <p className="text-xs text-purple-500 font-bold uppercase tracking-wide">Calorias / Dia</p>
                 </div>
               </div>
+
               <div className="grid grid-cols-3 gap-4 text-center mb-8">
                 <div className="bg-white p-4 rounded-xl shadow-sm border border-purple-100">
                   <span className="block text-2xl font-bold text-slate-800">{resultado.proteina}g</span>
@@ -132,6 +141,7 @@ export default function CalculadoraPage() {
                   <span className="text-xs text-slate-500 uppercase">Gordura</span>
                 </div>
               </div>
+
               <div className="bg-white border-l-4 border-emerald-500 p-4 rounded-r-xl shadow-sm">
                 <p className="text-slate-700 text-sm mb-3">
                   💡 <strong>Dica do Especialista:</strong> Bater {resultado.proteina}g de proteína apenas com comida pode ser difícil e caro.
@@ -140,6 +150,7 @@ export default function CalculadoraPage() {
                   Ver Melhores Ofertas de Whey Protein
                 </Link>
               </div>
+
             </div>
           )}
         </div>
